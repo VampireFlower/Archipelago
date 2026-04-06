@@ -1,4 +1,3 @@
-// clang -Os -target powerpc-eabi -mcpu=750 -mbig-endian -ffreestanding -nostdlib -S file.c
 #include "mgtt.h"
 
 
