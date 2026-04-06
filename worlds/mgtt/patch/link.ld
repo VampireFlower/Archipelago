@@ -1,7 +1,7 @@
 /* link.ld */
 OUTPUT_FORMAT("elf32-powerpc")
 OUTPUT_ARCH(powerpc)
-ENTRY(entry)
+/* ENTRY(entry) */
 
 MEMORY
 {
@@ -41,6 +41,9 @@ SECTIONS
     malloc    = ABSOLUTE(0x8001a670);
     free      = ABSOLUTE(0x8001a85c);
     OSReport  = ABSOLUTE(0x8001d20c);
+
+    _restgpr_29_x = ABSOLUTE(0x8002e20c);
+
     strcpy    = ABSOLUTE(0x80072600);
     strlen    = ABSOLUTE(0x80072678);
     strncmp   = ABSOLUTE(0x800726a0);

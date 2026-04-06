@@ -2,21 +2,6 @@
 
 
 
-// lvalue that lives at 0x800017B0
-#define mytext (*(int**)0x800017B0)
-
-
-// inject to 80018f4c
-void Text(void)
-{
-
-    mytext = TextBlockCreate(368,192,320,192,1,3);
-    TextBlockConfigure(mytext, 0, 8, 28, 13);
-
-
-    add_to_render_queue(11.0, TextDraw, mytext, 20);
-
-}
 
 
 void TextDraw(pTextBlock block) {
@@ -50,4 +35,18 @@ void TextDraw(pTextBlock block) {
     // means we can't use effects like typewriter. investigate later
     TextBlockDelete(block);
     free(block);
-    }
+
+
+}
+
+
+void Text(void)
+{
+    pTextBlock mytext;
+    mytext = TextBlockCreate(368,192,320,192,1,3);
+    TextBlockConfigure(mytext, 0, 8, 28, 13);
+
+
+    add_to_render_queue(11.0, TextDraw, (int)mytext, 20);
+
+}

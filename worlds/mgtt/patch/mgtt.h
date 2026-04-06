@@ -1,4 +1,4 @@
-// powerpc-eabi-gcc -Os -mcpu=750 -mbig-endian -ffreestanding -nostdlib -fno-pic -mno-sdata -G 0 -c text.c -o file.o
+// powerpc-eabi-gcc -Os -mcpu=750 -mbig-endian -ffreestanding -nostdlib -fno-pic -mno-sdata -G 0 -c main.c -o file.o
 
 #ifndef MGTT_H
 #define MGTT_H
@@ -6,7 +6,17 @@
 typedef float mtx[3][4];
 typedef float mtx44[4][4];
 
-typedef void * pTextBlock;
+typedef int * pTextBlock;
+
+void* malloc(int);
+void  free(void*);
+
+
+
+
+
+
+
 
 #define C_MTXOrtho ((void (*) \
 (                             \
@@ -44,7 +54,7 @@ typedef void * pTextBlock;
 #define TextBlockDraw       ((void (*)(int subsystem, mtx, int color, int))      0x80027ecc)
 #define TextBlockDelete     ((void (*)(pTextBlock))                              0x80024c98)
 
-#define add_to_render_queue ((void (*)(float depth, void* drawer, int arg, int priority))0x8001e924)
+#define add_to_render_queue ((void (*)(float depth, void* drawer, int arg, int priority)))
 
 
 
@@ -62,7 +72,6 @@ float Float(int bits)
 
     return out;
 }
-
 
 
 #endif
