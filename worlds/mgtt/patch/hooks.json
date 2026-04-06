@@ -1,0 +1,7 @@
+[
+    {
+    "file": "main.dol"
+    "origin": 0x80000000,
+    "destination": "MyCoroutine",
+    }
+]

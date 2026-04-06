@@ -38,6 +38,14 @@ SECTIONS
         *(COMMON)
     } > ram
 
-    /* Fixed-address function supplied by the host game / main.dol */
-    OSReport = ABSOLUTE(0x800056E0);
+    malloc    = ABSOLUTE(0x8001a670);
+    free      = ABSOLUTE(0x8001a85c);
+    OSReport  = ABSOLUTE(0x8001d20c);
+    strcpy    = ABSOLUTE(0x80072600);
+    strlen    = ABSOLUTE(0x80072678);
+    strncmp   = ABSOLUTE(0x800726a0);
+    memmove   = ABSOLUTE(0x80072710);
+    memcmp    = ABSOLUTE(0x80072798);
+    memset    = ABSOLUTE(0x800727d0);
+    memcpy    = ABSOLUTE(0x800727f8);
 }

@@ -1,4 +1,4 @@
-// clang -Os -target powerpc-eabi -mcpu=750 -mbig-endian -ffreestanding -nostdlib -fno_pic -ppc-sdata-threshold=0 file.c
+// powerpc-eabi-gcc -Os -mcpu=750 -mbig-endian -ffreestanding -nostdlib -fno-pic -mno-sdata -G 0 -c text.c -o file.o
 
 #ifndef MGTT_H
 #define MGTT_H
