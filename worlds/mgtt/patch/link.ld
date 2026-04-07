@@ -5,8 +5,7 @@ OUTPUT_ARCH(powerpc)
 
 MEMORY
 {
-    /* Example fixed load address for your blob */
-    ram (rwx) : ORIGIN = 0x80480000, LENGTH = 0x00008C00
+    xfb (rwx) : ORIGIN = 0x80127f60, LENGTH = 0xA020
 }
 
 SECTIONS
@@ -17,38 +16,41 @@ SECTIONS
     {
         *(.text)
         *(.text.*)
-    } > ram
+    } > xfb
 
     .rodata : ALIGN(4)
     {
         *(.rodata)
         *(.rodata.*)
-    } > ram
+    } > xfb
 
     .data : ALIGN(4)
     {
         *(.data)
         *(.data.*)
-    } > ram
+    } > xfb
 
     .bss (NOLOAD) : ALIGN(4)
     {
         *(.bss)
         *(.bss.*)
         *(COMMON)
-    } > ram
+    } > xfb
 
-    malloc    = ABSOLUTE(0x8001a670);
-    free      = ABSOLUTE(0x8001a85c);
-    OSReport  = ABSOLUTE(0x8001d20c);
 
-    _restgpr_29_x = ABSOLUTE(0x8002e20c);
 
-    strcpy    = ABSOLUTE(0x80072600);
-    strlen    = ABSOLUTE(0x80072678);
-    strncmp   = ABSOLUTE(0x800726a0);
-    memmove   = ABSOLUTE(0x80072710);
-    memcmp    = ABSOLUTE(0x80072798);
-    memset    = ABSOLUTE(0x800727d0);
-    memcpy    = ABSOLUTE(0x800727f8);
+    malloc    = 0x8001a670;
+    free      = 0x8001a85c;
+    OSReport  = 0x8001d20c;
+    add_to_render_queue = 0x8001e924;
+
+    _restgpr_29_x = 0x8002e20c;
+
+    strcpy    = 0x80072600;
+    strlen    = 0x80072678;
+    strncmp   = 0x800726a0;
+    memmove   = 0x80072710;
+    memcmp    = 0x80072798;
+    memset    = 0x800727d0;
+    memcpy    = 0x800727f8;
 }

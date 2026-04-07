@@ -54,10 +54,10 @@ void  free(void*);
 #define TextBlockDraw       ((void (*)(int subsystem, mtx, int color, int))      0x80027ecc)
 #define TextBlockDelete     ((void (*)(pTextBlock))                              0x80024c98)
 
-#define add_to_render_queue ((void (*)(float depth, void* drawer, int arg, int priority)))
+void add_to_render_queue(float depth, void* drawer, int arg, int priority);
 
 
-
+/*
 float Float(int bits)
 {
     float out;
@@ -72,6 +72,6 @@ float Float(int bits)
 
     return out;
 }
-
+*/
 
 #endif
