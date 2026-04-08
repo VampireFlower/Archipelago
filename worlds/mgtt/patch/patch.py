@@ -4,7 +4,7 @@ import subprocess
 
 from pathlib import Path
 
-dol = Path(input("Path to main.dol: ").trim('"')).read_bytes()
+dol = Path(input("Path to game: ").trim('"'))
 
 DOL_SECTION_OFFSETS = [
     0x100,
