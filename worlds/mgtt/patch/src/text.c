@@ -4,7 +4,7 @@
 
 
 
-void TextDraw(pTextBlock block) {
+void TextDraw(TextBlock* block) {
     
     mtx44 projection;
     mtx identity;
@@ -29,7 +29,7 @@ void TextDraw(pTextBlock block) {
     GXSetNumChans(0);
     GXSetTexCoordGen2(0,1,4,60);
     
-    TextBlockDraw(*((int*)block + 0x95), identity, 0xffffffff, 1);
+    TextBlockDraw(block + 0x95, identity, 0xffffffff, 1);
 
     // if it isnt deleted, the game automatically picks up on the tb and draws it?!
     // means we can't use effects like typewriter. investigate later
@@ -42,7 +42,7 @@ void TextDraw(pTextBlock block) {
 
 void Text(void)
 {
-    pTextBlock mytext;
+    TextBlock* mytext;
     mytext = TextBlockCreate(368,192,320,192,1,3);
     TextBlockConfigure(mytext, 0, 8, 28, 13);
 
