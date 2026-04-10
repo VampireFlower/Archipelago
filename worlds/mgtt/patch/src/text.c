@@ -40,7 +40,7 @@ void TextDraw(TextBlock* block) {
 }
 
 
-void Text(void)
+void TextManager(void)
 {
     TextBlock* mytext;
     mytext = TextBlockCreate(368,192,320,192,1,3);
