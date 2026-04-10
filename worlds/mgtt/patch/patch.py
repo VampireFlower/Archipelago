@@ -63,7 +63,7 @@ if nm.returncode != 0:
     print(nm.stderr)
     raise Exception("Getting symbol information failed!")
 
-# 8001a670 A malloc -> {'malloc': 2147591792}
+# 8001a670 T MyFunction -> {'MyFunction': 2147591792}
 symbols = {line.split(' ')[2]:int(line.split(' ')[0], 16)
            for line in nm.stdout.splitlines()}
 
@@ -73,8 +73,19 @@ for hook in hooks:
     hook["target"] = symbols[hook["target"]]
 
 
+args = ['powerpc-eabi-objcopy',
+        '-O', 'binary',
+        'blob.elf',
+        'dump.bin'
+        ]
 
-# custom code to dol and write hooks
+dump = subprocess.run(args, cwd=build, capture_output=True, text=True)
+
+if dump.returncode != 0:
+    print(dump.stderr)
+    raise Exception("Extracting code failed!")
+
+# add custom code to dol and write hooks
 
 
 # obtain the location in the dol that backs a specified memory address
