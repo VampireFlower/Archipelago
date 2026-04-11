@@ -42,6 +42,6 @@ void TextManager(void)
     if (!mytext){
         mytext = TextBlockCreate(368,192,320,192,1,3);
         TextBlockConfigure(mytext, 0, 8, 28, 13);
-        add_to_render_queue(11.0, TextDraw, (int)mytext, 20);
     }
+    add_to_render_queue(11.0, TextDraw, (int)mytext, 20);
 }

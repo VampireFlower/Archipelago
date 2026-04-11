@@ -166,8 +166,9 @@ if nm.returncode != 0:
 # 8001a670 T MyFunction -> {'MyFunction': 2147591792}
 symbols = {}
 for line in nm.stdout.splitlines():
-    address, _, symbol = line.split(' ')
-    symbols[symbol] = int(address, 16)
+    address, type, symbol = line.split(' ')
+    if type == 'T':
+        symbols[symbol] = int(address, 16)
 
 
 
