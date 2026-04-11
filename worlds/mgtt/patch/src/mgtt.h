@@ -6,7 +6,7 @@
 typedef float mtx[3][4];
 typedef float mtx44[4][4];
 
-typedef struct { int stuff; } TextBlock;
+typedef int TextBlock;
 
 void* malloc(int);
 void  free(void*);
@@ -31,7 +31,7 @@ void GXLoadPosMtxImm(mtx, int);
 
 TextBlock* TextBlockCreate(int, int, int, int, int, int);
 void TextBlockConfigure(TextBlock*, int strid, int x, int y, int);
-void TextBlockDraw(void* subsystem, mtx, int color, int);
+void TextBlockDraw(int subsystem, mtx, int color, int);
 void TextBlockDelete(TextBlock*);
 
 void add_to_render_queue(float depth, void* drawer, int arg, int priority);

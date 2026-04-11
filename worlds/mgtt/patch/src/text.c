@@ -1,8 +1,6 @@
 #include "mgtt.h"
 
-
-
-
+TextBlock* mytext;
 
 void TextDraw(TextBlock* block) {
     
@@ -29,24 +27,21 @@ void TextDraw(TextBlock* block) {
     GXSetNumChans(0);
     GXSetTexCoordGen2(0,1,4,60);
     
-    TextBlockDraw(block + 0x95, identity, 0xffffffff, 1);
+    TextBlockDraw(*(block + 0x95), identity, 0xffffffff, 1);
 
     // if it isnt deleted, the game automatically picks up on the tb and draws it?!
     // means we can't use effects like typewriter. investigate later
     TextBlockDelete(block);
-    free(block);
-
+    mytext = 0;
 
 }
 
 
 void TextManager(void)
 {
-    TextBlock* mytext;
-    mytext = TextBlockCreate(368,192,320,192,1,3);
-    TextBlockConfigure(mytext, 0, 8, 28, 13);
-
-
-    add_to_render_queue(11.0, TextDraw, (int)mytext, 20);
-
+    if (!mytext){
+        mytext = TextBlockCreate(368,192,320,192,1,3);
+        TextBlockConfigure(mytext, 0, 8, 28, 13);
+        add_to_render_queue(11.0, TextDraw, (int)mytext, 20);
+    }
 }
