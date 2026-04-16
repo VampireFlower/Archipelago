@@ -2,6 +2,7 @@
     {
     "file": "main.dol",
     "origin": 2147585864,
-    "target": "TextManager"
+    "target": "TextManager",
+    "kind": "bl"
     }
 ]

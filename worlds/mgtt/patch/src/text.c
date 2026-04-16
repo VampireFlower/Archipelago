@@ -31,17 +31,24 @@ void TextDraw(TextBlock* block) {
 
     // if it isnt deleted, the game automatically picks up on the tb and draws it?!
     // means we can't use effects like typewriter. investigate later
-    TextBlockDelete(block);
-    mytext = 0;
+    // TextBlockDelete(block);
+    // mytext = 0;
 
 }
 
 
 void TextManager(void)
 {
-    if (!mytext){
-        mytext = TextBlockCreate(368,192,320,192,1,3);
-        TextBlockConfigure(mytext, 0, 8, 28, 13);
+    char input = *(char*)0x8026bb60;
+
+    if (input == 1) { 
+        if (!mytext){
+            mytext = TextBlockCreate(368,192,320,192,1,3);
+            TextBlockConfigure(mytext, 0, 8, 28, 13);
+        }
+        add_to_render_queue(11.0, TextDraw, (int)mytext, 20);
+    } else if (mytext) {
+        TextBlockDelete(mytext);
+        mytext = 0;
     }
-    add_to_render_queue(11.0, TextDraw, (int)mytext, 20);
 }

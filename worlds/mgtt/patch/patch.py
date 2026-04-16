@@ -6,7 +6,7 @@ import subprocess
 
 from pathlib import Path
 
-game_dir = Path(r"C:\Users\Vamp\mgtt\discs\compressed\EN".strip('"'))
+game_dir = Path(r"G:\mgtt\discs\compressed\EN".strip('"'))
 
 
 class DOL:
@@ -167,10 +167,12 @@ if nm.returncode != 0:
 symbols = {}
 for line in nm.stdout.splitlines():
     address, type, symbol = line.split(' ')
-    if type == 'T':
-        symbols[symbol] = int(address, 16)
+    
+    if type == 'A': continue # not novel information
+    
+    symbols[symbol] = int(address, 16)
 
-
+json.dump(symbols, open(build/"symbols.txt", "w"), indent = 4)
 
 hooks = json.load(open(patch/'hooks.json'))
 
