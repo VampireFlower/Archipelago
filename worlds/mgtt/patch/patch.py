@@ -3,6 +3,7 @@ import json
 import shutil
 import struct
 import subprocess
+import sys
 
 from pathlib import Path
 
@@ -99,15 +100,14 @@ build.mkdir()
 
 source_files = [file for file in src.rglob('*.c')]
 
-args = ['powerpc-eabi-gcc',
+args = [patch/sys.platform/'gcc',
         '-Os',        # optimize for size
         '-c',         # output object files
         '-fno-pic',   # generate code that expects to load at a fixed address
         '-mno-sdata', # SDA is already taken
-        '-fno-asynchronous-unwind-tables' # omit section .eh_frame
+        '-fno-asynchronous-unwind-tables', # omit section .eh_frame
+        '-B', patch/sys.platform, # tell gcc where to find executables it depends on
         ] + source_files
-
-# -nostdlib controls how linker is driven, so we don't need it here
 
 #args.append("-ffreestanding")
 
@@ -122,7 +122,7 @@ if gcc.returncode != 0:
 
 object_files = [file for file in build.glob("*.o")]
 
-args = ['powerpc-eabi-ld',
+args = [patch/sys.platform/'ld',
         '-T', patch/'link.ld',
         '-o', 'blob.elf'
         ] + object_files
@@ -136,10 +136,10 @@ if ld.returncode != 0:
 
 
 
-args = ['powerpc-eabi-objcopy',
-        '-O', 'binary',
-        'blob.elf',
-        'dump.bin'
+args = [patch/sys.platform/'objcopy',
+        '-O', 'binary', # output type
+        'blob.elf',     # input
+        'dump.bin'      # output
         ]
 
 dump = subprocess.run(args, cwd=build, capture_output=True, text=True)
@@ -151,7 +151,7 @@ if dump.returncode != 0:
 
 
 
-args = ['powerpc-eabi-nm',
+args = [patch/sys.platform/'nm',
         '-n',
         'blob.elf'
         ]
@@ -172,7 +172,15 @@ for line in nm.stdout.splitlines():
     
     symbols[symbol] = int(address, 16)
 
-json.dump(symbols, open(build/"symbols.txt", "w"), indent = 4)
+# Dump symbols for debugging purposes
+pad = max(len(symbol) + 1 for symbol in symbols)
+with open(build/"symbols.txt", "w") as f:
+    for symbol, address in symbols.items():
+        symbol = (symbol+":").ljust(pad)
+        f.write(f"{symbol} {address:08x}\n")
+
+
+
 
 hooks = json.load(open(patch/'hooks.json'))
 
