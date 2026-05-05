@@ -29,7 +29,9 @@ void GXLoadPosMtxImm(mtx, int);
 
 
 
-TextBlock* TextBlockCreate(int, int, int, int, int, int);
+extern TextBlock TextBlocks[]; // 802cc050
+
+TextBlock* TextBlockActivate(int, int, int, int, int, int);
 void TextBlockConfigure(TextBlock*, int strid, int x, int y, int);
 void TextBlockDraw(int subsystem, mtx, int color, int);
 void TextBlockDelete(TextBlock*);
