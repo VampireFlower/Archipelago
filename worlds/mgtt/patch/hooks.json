@@ -1,8 +1,16 @@
 [
     {
-    "file": "main.dol",
+    "name": "Text_hook",
+    "file": "dol",
     "origin": 2147585864,
     "target": "TextManager",
-    "kind": "bl"
+    "type": "bl"
+    },
+    {
+    "name": "strokes_hook",
+    "file": "golf",
+    "origin": 2151756876,
+    "target": 2151756880,
+    "type": "b"
     }
 ]

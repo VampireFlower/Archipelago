@@ -43,8 +43,8 @@ class DOL:
         self.data[offset:offset+len(x)] = x
 
     def pad(self, n):
-        while len(self.data) % n:
-            self.data.append(0)
+        if to_add := -len(self.data) % n:
+            self.data.extend(bytes(to_add))
 
     # Obtain the location in the dol that backs a specified memory address
     def address_to_offset(self, address):
@@ -52,7 +52,7 @@ class DOL:
             if load_to <= address < load_to + size:
                 return file_offset + address - load_to
 
-    def add_text(self, blob, load_address):
+    def add_text(self, blob: bytes, load_address):
 
         # if self.address_to_offset(load_address) \
         # or self.address_to_offset(load_address+len(blob)):
@@ -84,6 +84,10 @@ class DOL:
 
 
 dol = DOL(game_dir/'sys'/'main.dol')
+clv = (game_dir/'files'/'C'/'L'/'V')
+buc = (game_dir/'files'/'B'/'U'/'C')
+clv_bytes = bytearray(mgtt.decompress(clv.read_bytes())[0])
+buc_bytes = bytearray(mgtt.decompress(buc.read_bytes())[0])
 
 
 patch = Path(__file__).parent
@@ -96,9 +100,15 @@ if build.exists(): shutil.rmtree(build)
 build.mkdir()
 
 
+hooks = json.load(open(patch/'hooks.json'))
+
+# add symbol names for hook locations
+with open(build/"auto_symbols.ld", "w") as f:
+    for hook in hooks:
+        f.write(f"{hook['name']} = {hook['origin']};\n")
 
 
-source_files = [file for file in src.rglob('*.c')]
+source_files = [file for file in src.rglob('*.[sc]')]
 
 args = [patch/sys.platform/'gcc',
         '-Os',        # optimize for size
@@ -107,6 +117,7 @@ args = [patch/sys.platform/'gcc',
         '-mno-sdata', # SDA is already taken
         '-fno-asynchronous-unwind-tables', # omit section .eh_frame
         '-B', patch/sys.platform, # tell gcc where to find executables it depends on
+        '-mregnames'  # allow usage of register names in assembly source 
         ] + source_files
 
 #args.append("-ffreestanding")
@@ -166,9 +177,9 @@ if nm.returncode != 0:
 # 8001a670 T MyFunction -> {'MyFunction': 2147591792}
 symbols = {}
 for line in nm.stdout.splitlines():
-    address, type, symbol = line.split(' ')
+    address, kind, symbol = line.split(' ')
     
-    if type == 'A': continue # not novel information
+    if kind == 'A': continue # not novel information
     
     symbols[symbol] = int(address, 16)
 
@@ -182,29 +193,53 @@ with open(build/"symbols.txt", "w") as f:
 
 
 
-hooks = json.load(open(patch/'hooks.json'))
-
 for hook in hooks:
 
-    hook["target"] = symbols[hook["target"]]
+    # if the target is a symbol name, use the address of that symbol name
+    if type(hook["target"]) == str:
+        hook["target"] = symbols[hook["target"]]
 
-    # Write hooks to absolute memory addresses.
     match hook["file"]:
         
-        case 'main.dol':
+        case 'dol':
+
             trampoline = dol.address_to_offset(hook["origin"])
-            branch = mgtt.gecko.make_bl(hook["origin"], hook["target"])
+
+            if hook['type'] == 'bl':
+                branch = mgtt.gecko.make_bl(hook["origin"], hook["target"])
+            elif hook['type'] == 'b':
+                branch = mgtt.gecko.make_b(hook["origin"], hook["target"])
+
             dol.write_bytes(branch, trampoline)
         
-        case 'overlay_golf':
-            pass
+        case 'golf':
 
-        case 'overlay_menu':
-            pass
+            if hook['type'] == 'bl':
+                branch = mgtt.gecko.make_bl(hook["origin"], hook["target"])
+            elif hook['type'] == 'b':
+                branch = mgtt.gecko.make_b(hook["origin"], hook["target"])
 
-    # TODO: write hooks to relative memory addresses (0x00001400 instead of 0x80001400)
+            trampoline = hook['origin'] - 0x80400000
+            clv_bytes[trampoline:trampoline+4] = branch
+
+
+        case 'menu':
+
+            if hook['type'] == 'bl':
+                branch = mgtt.gecko.make_bl(hook["origin"], hook["target"])
+            elif hook['type'] == 'b':
+                branch = mgtt.gecko.make_b(hook["origin"], hook["target"])
+
+            trampoline = hook['origin'] - 0x80400000
+            buc_bytes[trampoline:trampoline+4] = branch
+
+
+
 
 dol.add_text((build/'dump.bin').read_bytes(), 0x80127f60)
 dol.save()
+clv.write_bytes(mgtt.compress(clv_bytes))
+buc.write_bytes(mgtt.compress(buc_bytes))
+
 
 print("\nBuild complete. Wahoo!")

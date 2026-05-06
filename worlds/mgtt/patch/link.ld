@@ -1,4 +1,5 @@
-/* link.ld */
+INCLUDE auto_symbols.ld
+
 OUTPUT_FORMAT("elf32-powerpc")
 OUTPUT_ARCH(powerpc)
 /* ENTRY(entry) */
@@ -48,7 +49,7 @@ add_to_render_queue = 0x8001e924;
 
 TextBlockDelete    = 0x80024c98;
 TextBlockConfigure = 0x80024cfc;
-TextBlockCreate    = 0x80024e04;
+TextBlockActivate  = 0x80024e04;
 TextBlockDraw      = 0x80027ecc;
 
 _restgpr_   = 0x8002e264;
