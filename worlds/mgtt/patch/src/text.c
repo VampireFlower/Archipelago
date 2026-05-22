@@ -43,8 +43,8 @@ void TextManager(void)
 
     if (input == 1) { 
         if (!mytext){
-            mytext = TextBlockActivate(368,192,320,192,1,3);
-            TextBlockConfigure(mytext, 0, 8, 28, 0);
+            mytext = TextBlockActivate(368,192,320,192,1,20);
+            TextBlockConfigure(mytext, 0, 8, 28, 1);
         }
         add_to_render_queue(11.0, TextDraw, (int)mytext, 20);
     } else if (mytext) {

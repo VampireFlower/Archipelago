@@ -1,4 +1,4 @@
-[
+hooks = [
     {
     "name": "Text_hook",
     "file": "dol",
@@ -9,8 +9,8 @@
     {
     "name": "strokes_hook",
     "file": "golf",
-    "origin": 2151756876,
-    "target": 2151756880,
+    "origin": 0x8041344C,
+    "target": 0x80413450,
     "type": "b"
     }
 ]
