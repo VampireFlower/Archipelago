@@ -6,37 +6,38 @@ OUTPUT_ARCH(powerpc)
 
 MEMORY
 {
+    ram (rwx) : ORIGIN = 0x805247b4, LENGTH = 0x2B84C
     xfb (rwx) : ORIGIN = 0x80127f60, LENGTH = 0xA020
 }
 
 SECTIONS
 {
-    . = ORIGIN(xfb);
+    . = ORIGIN(ram);
 
     .text : ALIGN(4)
     {
         *(.text)
         *(.text.*)
-    } > xfb
+    } > ram
 
     .rodata : ALIGN(4)
     {
         *(.rodata)
         *(.rodata.*)
-    } > xfb
+    } > ram
 
     .data : ALIGN(4)
     {
         *(.data)
         *(.data.*)
-    } > xfb
+    } > ram
 
     .bss (NOLOAD) : ALIGN(4)
     {
         *(.bss)
         *(.bss.*)
         *(COMMON)
-    } > xfb
+    } > ram
 
 }
 
