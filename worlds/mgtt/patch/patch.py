@@ -123,8 +123,8 @@ with open(build/"symbols.txt", "w") as f:
 
 
 funcs = {
-    "b":  mgtt.gecko.make_b,
-    "bl": mgtt.gecko.make_bl,
+    "b":  mgtt.ppc.make_b,
+    "bl": mgtt.ppc.make_bl,
 }
 
 for hook in hooks:
