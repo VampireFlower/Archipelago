@@ -10,7 +10,7 @@ from pathlib import Path
 
 from hooks import hooks
 
-game_dir = Path(r"G:\mgtt\discs\compressed\EN".strip('"'))
+game_dir = mgtt.get_disc("compressed")
 
 
 
