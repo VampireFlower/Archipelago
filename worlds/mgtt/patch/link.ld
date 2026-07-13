@@ -8,6 +8,7 @@ MEMORY
 {
     ram (rwx) : ORIGIN = 0x805247b4, LENGTH = 0x2B84C
     xfb (rwx) : ORIGIN = 0x80127f60, LENGTH = 0xA020
+    eva (rwx) : ORIGIN = 0x800014B0, LENGTH = 592
 }
 
 SECTIONS
