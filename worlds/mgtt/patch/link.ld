@@ -41,11 +41,16 @@ SECTIONS
 
 }
 
+cosf = 0x80009618;
+
 
 malloc    = 0x8001a670;
 free      = 0x8001a85c;
 OSReport  = 0x8001d20c;
 add_to_render_queue = 0x8001e924;
+
+
+sinf = 0x8002157c;
 
 
 TextBlockDelete    = 0x80024c98;
