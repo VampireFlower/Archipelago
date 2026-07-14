@@ -17,8 +17,8 @@ game_dir = mgtt.get_disc("compressed")
 dol = mgtt.DOL(game_dir/'sys'/'main.dol')
 clv = (game_dir/'files'/'C'/'L'/'V')
 buc = (game_dir/'files'/'B'/'U'/'C')
-clv_bytes = bytearray(mgtt.decompress(clv.read_bytes())[0])
-buc_bytes = bytearray(mgtt.decompress(buc.read_bytes())[0])
+clv_bytes ,= mgtt.decompress(clv.read_bytes())
+buc_bytes ,= mgtt.decompress(buc.read_bytes())
 
 
 patch = Path(__file__).parent
@@ -29,12 +29,6 @@ src   = patch/'src'
 if build.exists(): shutil.rmtree(build)
 
 build.mkdir()
-
-
-# add symbol names for hook locations
-with open(build/"auto_symbols.ld", "w") as f:
-    for hook in hooks:
-        f.write(f"{hook['name']} = {hook['origin']:#x};\n")
 
 
 source_files = [file for file in src.rglob('*.[sc]')]
@@ -56,6 +50,14 @@ gcc = subprocess.run(args, cwd=build, capture_output=True, text=True)
 if gcc.returncode != 0:
     print(gcc.stderr)
     raise Exception("Compilation failed!")
+
+
+
+
+# add symbol names for hook locations
+with open(build/"auto_symbols.ld", "w") as f:
+    for hook in hooks:
+        f.write(f"{hook['name']} = {hook['origin']:#x};\n")
 
 
 

@@ -6,6 +6,11 @@
 typedef float mtx[3][4];
 typedef float mtx44[4][4];
 
+float cosf(float);
+float sinf(float);
+
+
+
 typedef int TextBlock;
 
 void* malloc(int);

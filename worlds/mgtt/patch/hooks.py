@@ -2,7 +2,7 @@ hooks = [
     {
     "name": "Text_hook",
     "file": "dol",
-    "origin": 2147585864,
+    "origin": 0x80018f48,
     "target": "TextManager",
     "type": "bl"
     },
