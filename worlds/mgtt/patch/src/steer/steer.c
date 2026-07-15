@@ -3,8 +3,7 @@
 float fabsf(float);
 float powf(float, float);
 
-
-static void sincosf(float x, float *s, float *c)
+void sincosf(float x, float *s, float *c)
 {
     *s = sinf(x);
     *c = cosf(x);

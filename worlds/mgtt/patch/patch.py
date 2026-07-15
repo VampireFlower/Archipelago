@@ -10,8 +10,24 @@ from pathlib import Path
 
 from hooks import hooks
 
-game_dir = mgtt.get_disc("compressed")
 
+
+
+
+patch = Path(__file__).parent
+
+build = patch/'build'
+src   = patch/'src'
+
+
+if build.exists():
+    shutil.rmtree(build)
+    subprocess.run(['git', '-C', mgtt.REPO_ROOT, 'restore', 'discs'])
+
+build.mkdir()
+
+
+game_dir = mgtt.get_disc("compressed")
 
 
 dol = mgtt.DOL(game_dir/'sys'/'main.dol')
@@ -21,18 +37,7 @@ clv_bytes = mgtt.decompress(clv.read_bytes())[0]
 buc_bytes = mgtt.decompress(buc.read_bytes())[0]
 
 
-patch = Path(__file__).parent
 
-build = patch/'build'
-src   = patch/'src'
-
-
-
-if build.exists():
-    shutil.rmtree(build)
-    subprocess.run(['git', '-C', mgtt.REPO_ROOT, 'restore', 'discs'])
-
-build.mkdir()
 
 
 source_files = [file for file in src.rglob('*.[sc]')]

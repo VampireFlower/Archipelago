@@ -4,7 +4,7 @@
 steer_asm:
 stwu sp,-0x10(sp)
 mflr r0
-stw  r0,0x14(sp) # backup lr
+stw  r0,0x14(sp)
 stw  r3,8(sp) # backup arg
 
 
@@ -14,11 +14,8 @@ cmpwi r0,1
 bne .ret
 
 
-lis r12,ball_steer@ha
-addi r12,r12,ball_steer@l
-
-
-
+#lis r12,ball_steer@ha
+#addi r12,r12,ball_steer@l
 
 
 addi r3,r3,0x50 # &ball->Velocity
@@ -36,9 +33,9 @@ lwz r11,0x4f14(r11) # Player->controller
 lfs f1,0x20(r11) # controller->left_stick
 
 
-
-mtctr r12
-bctrl # steer
+#mtrctr r12
+#bctrl
+bl ball_steer
 
 
 .ret:
