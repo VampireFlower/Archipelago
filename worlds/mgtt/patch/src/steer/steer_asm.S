@@ -14,9 +14,6 @@ cmpwi r0,1
 bne .ret
 
 
-#lis r12,ball_steer@ha
-#addi r12,r12,ball_steer@l
-
 
 addi r3,r3,0x50 # &ball->Velocity
 
@@ -33,6 +30,8 @@ lwz r11,0x4f14(r11) # Player->controller
 lfs f1,0x20(r11) # controller->left_stick
 
 
+#lis r12,ball_steer@ha
+#addi r12,r12,ball_steer@l
 #mtrctr r12
 #bctrl
 bl ball_steer

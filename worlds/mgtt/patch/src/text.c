@@ -1,4 +1,5 @@
-#include "mgtt.h"
+#include <mgtt.h>
+#include <gx.h>
 
 TextBlock* mytext;
 

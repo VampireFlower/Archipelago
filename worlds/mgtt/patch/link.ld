@@ -42,22 +42,23 @@ SECTIONS
 
 }
 
-cosf = 0x80009618;
+cos = 0x80009618;
 
-
-malloc    = 0x8001a670;
-free      = 0x8001a85c;
-OSReport  = 0x8001d20c;
+malloc_from = 0x8001a628;
+malloc      = 0x8001a670;
+free        = 0x8001a85c;
+OSReport    = 0x8001d20c;
 add_to_render_queue = 0x8001e924;
 
 
-sinf = 0x8002157c;
+sin = 0x8002157c;
 
 
-TextBlockDelete    = 0x80024c98;
-TextBlockConfigure = 0x80024cfc;
-TextBlockActivate  = 0x80024e04;
-TextBlockDraw      = 0x80027ecc;
+TextBlockStateMachine = 0x80024698;
+TextBlockDelete       = 0x80024c98;
+TextBlockConfigure    = 0x80024cfc;
+TextBlockActivate     = 0x80024e04;
+TextBlockDrawGlyphs   = 0x80027ecc;
 
 
 
@@ -206,3 +207,8 @@ GXSetZMode        = 0x8006e23c;
 GXSetProjection   = 0x8006fcc0;
 GXLoadPosMtxImm   = 0x8006fe10;
 
+
+TextBlocks = 0x802cc050;
+
+
+ShotReplayCount = 0x805052a4;
