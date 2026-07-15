@@ -10,7 +10,6 @@ float cosf(float);
 float sinf(float);
 
 
-
 typedef int TextBlock;
 
 void* malloc(int);

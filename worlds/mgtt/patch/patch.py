@@ -17,8 +17,8 @@ game_dir = mgtt.get_disc("compressed")
 dol = mgtt.DOL(game_dir/'sys'/'main.dol')
 clv = (game_dir/'files'/'C'/'L'/'V')
 buc = (game_dir/'files'/'B'/'U'/'C')
-clv_bytes ,= mgtt.decompress(clv.read_bytes())
-buc_bytes ,= mgtt.decompress(buc.read_bytes())
+clv_bytes = mgtt.decompress(clv.read_bytes())[0]
+buc_bytes = mgtt.decompress(buc.read_bytes())[0]
 
 
 patch = Path(__file__).parent
@@ -26,24 +26,32 @@ patch = Path(__file__).parent
 build = patch/'build'
 src   = patch/'src'
 
-if build.exists(): shutil.rmtree(build)
+
+
+if build.exists():
+    shutil.rmtree(build)
+    subprocess.run(['git', '-C', mgtt.REPO_ROOT, 'restore', 'discs'])
 
 build.mkdir()
 
 
 source_files = [file for file in src.rglob('*.[sc]')]
 
+
 args = [patch/sys.platform/'gcc',
         '-Os',        # optimize for size
         '-c',         # output object files
         '-fno-pic',   # generate code that expects to load at a fixed address
+        '-mregnames', # allow usage of register names in assembly source
         '-mno-sdata', # SDA is already taken
-        '-fno-asynchronous-unwind-tables', # omit section .eh_frame
         '-B', patch/sys.platform, # tell gcc where to find executables it depends on
-        '-mregnames'  # allow usage of register names in assembly source 
+        '-I', patch/'src'/'include',
+        '-fno-asynchronous-unwind-tables' # omit section .eh_frame
         ] + source_files
 
+args.append("-fno-use-linker-plugin")
 #args.append("-ffreestanding")
+
 
 gcc = subprocess.run(args, cwd=build, capture_output=True, text=True)
 
@@ -108,7 +116,7 @@ if nm.returncode != 0:
 # 8001a670 T MyFunction -> {'MyFunction': 2147591792}
 symbols = {}
 for line in nm.stdout.splitlines():
-    address, kind, symbol = line.split(' ')
+    address, kind, symbol = line.split()
     
     if kind == 'A': continue # not novel information
     
@@ -159,7 +167,7 @@ for hook in hooks:
 
 
 
-dol.add_text((build/'dump.bin').read_bytes(), 0x80127f60)
+dol.add_text((build/'dump.bin').read_bytes(), 0x805247b4)
 dol.save()
 clv.write_bytes(mgtt.compress(clv_bytes))
 buc.write_bytes(mgtt.compress(buc_bytes))
