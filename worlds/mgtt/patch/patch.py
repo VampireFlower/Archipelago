@@ -50,7 +50,7 @@ args = [patch/sys.platform/'gcc',
         '-mregnames', # allow usage of register names in assembly source
         '-mno-sdata', # SDA is already taken
         '-B', patch/sys.platform, # tell gcc where to find executables it depends on
-        '-I', patch/'src'/'include',
+        '-I', patch/'include',
         '-fno-asynchronous-unwind-tables' # omit section .eh_frame
         ] + source_files
 

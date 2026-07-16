@@ -135,101 +135,102 @@ void ball_steer(Vec3* velocity, float stick_x)
 
 
     if (ShotReplayCount > 0) { // play recording
-        floats[0] = 1.0f;
+        stick_x = floats[0];
 
     } else { // steer
-
         stick_x = steer_process_stick(stick_x);
-
-        if (stick_x == 0.0f)
-            return;
-
-        horizontal_speed_squared =
-            velocity->x * velocity->x +
-            velocity->z * velocity->z;
-
-        if (
-            horizontal_speed_squared <=
-            BALL_STEER_MIN_HORIZONTAL_SPEED *
-            BALL_STEER_MIN_HORIZONTAL_SPEED
-        ) {
-            return;
-        }
-
-        horizontal_speed = sqrtf(horizontal_speed_squared);
-
-        /*
-        * 0 at fast speed, 1 at slow speed.
-        */
-        speed_factor =
-            (BALL_STEER_FAST_SPEED - horizontal_speed) /
-            (BALL_STEER_FAST_SPEED - BALL_STEER_SLOW_SPEED);
-
-        speed_factor = clampf(speed_factor, 0.0f, 1.0f);
-
-        /*
-        * Quadratic curve:
-        *
-        * Steering stays weak through much of the high-speed flight,
-        * then increases more strongly as the ball becomes slow.
-        */
-        speed_factor *= speed_factor;
-
-        acceleration =
-            BALL_STEER_FAST_ACCELERATION +
-            (
-                BALL_STEER_SLOW_ACCELERATION -
-                BALL_STEER_FAST_ACCELERATION
-            ) * speed_factor;
-
-        /*
-        * Lateral acceleration divided by speed gives angular velocity.
-        */
-        turn_rate = acceleration / horizontal_speed;
-
-        maximum_turn_rate =
-            BALL_STEER_MAX_DEGREES_PER_SECOND *
-            BALL_STEER_DEG_TO_RAD;
-
-        if (turn_rate > maximum_turn_rate)
-            turn_rate = maximum_turn_rate;
-
-        angle =
-            BALL_STEER_DIRECTION_SIGN *
-            stick_x *
-            turn_rate *
-            dt;
-
-        sine = sin(angle);
-        cosine = cos(angle);
-
-        new_x =
-            velocity->x * cosine +
-            velocity->z * sine;
-
-        new_z =
-            velocity->z * cosine -
-            velocity->x * sine;
-
-        /*
-        * Rotation should preserve magnitude exactly. Correct only any
-        * floating-point increase, satisfying the no-speed-increase rule.
-        */
-        new_length_squared =
-            new_x * new_x +
-            new_z * new_z;
-
-        if (new_length_squared > horizontal_speed_squared) {
-            correction =
-                sqrtf(horizontal_speed_squared / new_length_squared);
-
-            new_x *= correction;
-            new_z *= correction;
-        }
-
-        velocity->x = new_x;
-        velocity->z = new_z;
-
+        floats[0] = stick_x;
     }
+
+    if (stick_x == 0.0f)
+        return;
+
+    horizontal_speed_squared =
+        velocity->x * velocity->x +
+        velocity->z * velocity->z;
+
+    if (
+        horizontal_speed_squared <=
+        BALL_STEER_MIN_HORIZONTAL_SPEED *
+        BALL_STEER_MIN_HORIZONTAL_SPEED
+    ) {
+        return;
+    }
+
+    horizontal_speed = sqrtf(horizontal_speed_squared);
+
+    /*
+    * 0 at fast speed, 1 at slow speed.
+    */
+    speed_factor =
+        (BALL_STEER_FAST_SPEED - horizontal_speed) /
+        (BALL_STEER_FAST_SPEED - BALL_STEER_SLOW_SPEED);
+
+    speed_factor = clampf(speed_factor, 0.0f, 1.0f);
+
+    /*
+    * Quadratic curve:
+    *
+    * Steering stays weak through much of the high-speed flight,
+    * then increases more strongly as the ball becomes slow.
+    */
+    speed_factor *= speed_factor;
+
+    acceleration =
+        BALL_STEER_FAST_ACCELERATION +
+        (
+            BALL_STEER_SLOW_ACCELERATION -
+            BALL_STEER_FAST_ACCELERATION
+        ) * speed_factor;
+
+    /*
+    * Lateral acceleration divided by speed gives angular velocity.
+    */
+    turn_rate = acceleration / horizontal_speed;
+
+    maximum_turn_rate =
+        BALL_STEER_MAX_DEGREES_PER_SECOND *
+        BALL_STEER_DEG_TO_RAD;
+
+    if (turn_rate > maximum_turn_rate)
+        turn_rate = maximum_turn_rate;
+
+    angle =
+        BALL_STEER_DIRECTION_SIGN *
+        stick_x *
+        turn_rate *
+        dt;
+
+    sine = sin(angle);
+    cosine = cos(angle);
+
+    new_x =
+        velocity->x * cosine +
+        velocity->z * sine;
+
+    new_z =
+        velocity->z * cosine -
+        velocity->x * sine;
+
+    /*
+    * Rotation should preserve magnitude exactly. Correct only any
+    * floating-point increase, satisfying the no-speed-increase rule.
+    */
+    new_length_squared =
+        new_x * new_x +
+        new_z * new_z;
+
+    if (new_length_squared > horizontal_speed_squared) {
+        correction =
+            sqrtf(horizontal_speed_squared / new_length_squared);
+
+        new_x *= correction;
+        new_z *= correction;
+    }
+
+    velocity->x = new_x;
+    velocity->z = new_z;
+
+    
 
 }
