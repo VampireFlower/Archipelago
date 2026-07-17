@@ -131,18 +131,19 @@ with open(build/"symbols.txt", "w") as f:
 
 
 
-funcs = {
-    "b":  mgtt.ppc.make_b,
-    "bl": mgtt.ppc.make_bl,
-}
-
 for hook in hooks:
 
     # if the target is a symbol name, use the address of that symbol name
     if type(hook["target"]) == str:
         hook["target"] = symbols[hook["target"]]
 
-    branch = funcs[hook['type']](hook["origin"], hook["target"])
+
+    match hook['type']:
+        case 'b':
+            branch = mgtt.ppc.make_b(hook["origin"], hook["target"])
+        case 'bl':
+            branch = mgtt.ppc.make_bl(hook["origin"], hook["target"])
+
 
     match hook["file"]:
         
