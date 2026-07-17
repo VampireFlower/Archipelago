@@ -130,16 +130,14 @@ void ball_steer(Vec3* velocity, float stick_x)
 
     
 
-    float* floats = malloc_from(0, 0x500);
-
+    //float* floats = malloc_from(0, 0x500);
 
 
     if (ShotReplayCount > 0) { // play recording
-        stick_x = floats[0];
+        stick_x = 0.5f;
 
     } else { // steer
         stick_x = steer_process_stick(stick_x);
-        floats[0] = stick_x;
     }
 
     if (stick_x == 0.0f)

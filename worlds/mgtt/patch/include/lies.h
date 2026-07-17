@@ -4,7 +4,7 @@
 #define MGTT_LIES_H
 
 
-typedef enum LieID { // Lie enum without lie qualities. there are 65 (0...64 inclusive) values according to 804d93c0
+typedef enum LieID : int { // Lie enum without lie qualities. there are 65 (0...64 inclusive) values according to 804d93c0
     Tee=0,
     Fairway=1,
     Green=2,
@@ -60,8 +60,6 @@ typedef enum LieID { // Lie enum without lie qualities. there are 65 (0...64 inc
     Ship_Sail=52,
     Piranha_Plant=53
 } LieID;
-
-_Static_assert(sizeof(LieID) == 4, "Unexpected enum size");
 
 
 #endif

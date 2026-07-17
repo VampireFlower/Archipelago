@@ -1,7 +1,5 @@
 import mgtt
-import json
 import shutil
-import struct
 import subprocess
 import sys
 
@@ -58,12 +56,10 @@ args.append("-fno-use-linker-plugin")
 #args.append("-ffreestanding")
 
 
-gcc = subprocess.run(args, cwd=build, capture_output=True, text=True)
+gcc = subprocess.run(args, cwd=build, text=True)
 
 if gcc.returncode != 0:
-    print(gcc.stderr)
     raise Exception("Compilation failed!")
-
 
 
 
@@ -82,10 +78,9 @@ args = [patch/sys.platform/'ld',
         '-o', 'blob.elf'
         ] + object_files
 
-ld = subprocess.run(args, cwd=build, capture_output=True, text=True)
+ld = subprocess.run(args, cwd=build, text=True)
 
 if ld.returncode != 0:
-    print(ld.stderr)
     raise Exception("Linking failed!")
 
 
@@ -97,10 +92,9 @@ args = [patch/sys.platform/'objcopy',
         'dump.bin'      # output
         ]
 
-dump = subprocess.run(args, cwd=build, capture_output=True, text=True)
+dump = subprocess.run(args, cwd=build, text=True)
 
 if dump.returncode != 0:
-    print(dump.stderr)
     raise Exception("Extracting code failed!")
 
 

@@ -5,12 +5,9 @@
 
 // big bool
 typedef enum BOOL {
-    false,
-    true
+    FALSE,
+    TRUE
 } BOOL;
-
-// little bool
-typedef unsigned char bool;
 
 typedef unsigned char byte;
 typedef signed char sbyte;
