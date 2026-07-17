@@ -28,7 +28,7 @@ void TextDraw(TextBlock* block) {
     GXSetNumChans(0);
     GXSetTexCoordGen2(0,1,4,60);
     
-    TextBlockDraw(*(block + 0x95), identity, 0xffffffff, 1);
+    TextBlockDrawGlyphs(*(block + 0x95), identity, 0xffffffff, 1);
 
     // if it isnt deleted, the game automatically picks up on the tb and draws it?!
     // means we can't use effects like typewriter. investigate later
