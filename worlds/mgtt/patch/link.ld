@@ -1,14 +1,15 @@
 INCLUDE auto_symbols.ld
 
+recording = 0x80127f60;
+
 OUTPUT_FORMAT("elf32-powerpc")
 OUTPUT_ARCH(powerpc)
-/* ENTRY(entry) */
 
 MEMORY
 {
-    ram (rwx) : ORIGIN = 0x805247b4, LENGTH = 0x2B84C
-    xfb (rwx) : ORIGIN = 0x80127f60, LENGTH = 0xA020
     eva (rwx) : ORIGIN = 0x800014B0, LENGTH = 592
+    xfb (rwx) : ORIGIN = 0x80127f60, LENGTH = 0xA020
+    ram (rwx) : ORIGIN = 0x805247b4, LENGTH = 0x2B84C
 }
 
 SECTIONS
@@ -210,5 +211,6 @@ GXLoadPosMtxImm   = 0x8006fe10;
 
 TextBlocks = 0x802cc050;
 
+DrawShotEndText = 0x80431610;
 
 ShotReplayCount = 0x805052a4;

@@ -4,22 +4,11 @@
 float fabsf(float);
 float powf(float, float);
 
-
-
-#ifndef BALL_STEER_UPDATE_HZ
-#define BALL_STEER_UPDATE_HZ 60.0f
-#endif
-
 /*
  * Based on an observed launch horizontal speed near 4.0.
  */
-#ifndef BALL_STEER_FAST_SPEED
 #define BALL_STEER_FAST_SPEED 4.0f
-#endif
-
-#ifndef BALL_STEER_SLOW_SPEED
 #define BALL_STEER_SLOW_SPEED 0.5f
-#endif
 
 /*
  * Desired sideways velocity change per second.
@@ -27,32 +16,19 @@ float powf(float, float);
  * These are initial tuning values, not physically derived constants.
  * At high speed the control is deliberately weak.
  */
-#ifndef BALL_STEER_FAST_ACCELERATION
+
 #define BALL_STEER_FAST_ACCELERATION 0.04f
-#endif
 
-#ifndef BALL_STEER_SLOW_ACCELERATION
 #define BALL_STEER_SLOW_ACCELERATION 0.75f
-#endif
 
-/*
- * Prevent the 1/speed conversion from producing an extreme turn.
- */
-#ifndef BALL_STEER_MAX_DEGREES_PER_SECOND
+// Prevent the 1/speed conversion from producing an extreme turn.
 #define BALL_STEER_MAX_DEGREES_PER_SECOND 120.0f
-#endif
 
-#ifndef BALL_STEER_MIN_HORIZONTAL_SPEED
 #define BALL_STEER_MIN_HORIZONTAL_SPEED 0.02f
-#endif
 
-#ifndef BALL_STEER_STICK_DEADZONE
 #define BALL_STEER_STICK_DEADZONE 0.08f
-#endif
 
-#ifndef BALL_STEER_DIRECTION_SIGN
-#define BALL_STEER_DIRECTION_SIGN 1.0f
-#endif
+#define BALL_STEER_DIRECTION_SIGN -1.0f
 
 #define BALL_STEER_DEG_TO_RAD 0.01745329251994329577f
 
@@ -70,8 +46,7 @@ clampf(float x, float minimum, float maximum)
 }
 
 
-static inline float
-sqrtf(float x)
+static inline float sqrtf(float x)
 {
     float y;
 
@@ -86,8 +61,7 @@ sqrtf(float x)
 }
 
 
-static float
-steer_process_stick(float stick)
+float steer_process_stick(float stick)
 {
     float magnitude;
 
@@ -106,13 +80,13 @@ steer_process_stick(float stick)
      */
     magnitude *= magnitude;
 
-    return stick > 0.0f ? -magnitude : magnitude;
+    return stick < 0.0f ? -magnitude : magnitude;
 }
 
-
-void ball_steer(Vec3* velocity, float stick_x)
+// flightcontext is 1
+void ball_steer(BallFlyingState* ball, float stick_x)
 {
-    const float dt = 1.0f / BALL_STEER_UPDATE_HZ;
+    const float dt = 1.0f / 60.0f;
 
     float horizontal_speed_squared;
     float horizontal_speed;
@@ -128,16 +102,19 @@ void ball_steer(Vec3* velocity, float stick_x)
     float new_length_squared;
     float correction;
 
-    
+
+    Vec3* velocity = &ball->velocity;
+
+    extern float recording[];
 
     //float* floats = malloc_from(0, 0x500);
 
 
     if (ShotReplayCount > 0) { // play recording
-        stick_x = 0.5f;
+        stick_x = recording[ball->shotUpdateCount];
 
     } else { // steer
-        stick_x = steer_process_stick(stick_x);
+        recording[ball->shotUpdateCount] = stick_x = steer_process_stick(stick_x);
     }
 
     if (stick_x == 0.0f)
@@ -228,7 +205,5 @@ void ball_steer(Vec3* velocity, float stick_x)
 
     velocity->x = new_x;
     velocity->z = new_z;
-
-    
 
 }

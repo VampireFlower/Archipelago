@@ -34,7 +34,7 @@ typedef struct BallRestingState {
     Quaternion rotation;
     Vec3 contactNormal;
     bool isHoled;
-    byte lieFlags; // Course geometry reports lie ID along with 2 boolean flags. They are related to ob and hazard
+    byte lieFlags; // Course geometry reports lie ID along with 2 boolean flags. OB and hazard related
     bool isUnderwater;
     LieID lie;
     uint lieQuality;
@@ -42,7 +42,50 @@ typedef struct BallRestingState {
 
 
 typedef struct BallFlyingState {
+    Vec3 pipeExitPosition;
+    int pipeLerpFramesRemaining;
+    int field_0x10;
+    float field_0x14;
+    float field_0x18;
+    float field_0x1c;
+    float field_0x20;
+    byte spin_type;
+    byte field_0x25;
+    Vec3 field_0x28;
+    Vec3 field_0x34;
+    int field_0x40;
+    float field_0x44;
+    int flightContext;
+    int state;
+    Vec3 velocity;
+    float spinrate;
+    Quaternion rotation;
+    sbyte owner;
+    bool isHoled;
+    bool pinShot;
+    bool flagShot;
+    byte assistRelated;
+    bool underwater;
+    byte field_0x76;
+    byte field_0x77;
+    byte field_0x78;
+    Vec3 field_0x7c;
+    byte field_0x88;
+    byte booSFXcooldown;
+    int groundCollisionCount;
+    uint groundFramesConsecutive;
+    int physicsStepIndex;
+    uint shotUpdateCount;
+    Vec3 position;
+    Vec3 contactNormal;
+    LieID firstContact;
+    LieID lie; // set by contact surface when rolling. during flight, raycast to the ground once every 8 frames if the ball is moving downwards
+    int lieQuality;
+    uint groundHistoryBitmap;
+    int field_0xc4;
+    byte lieFlags;
     struct ShotParameters* shotParameters;
+    int field_0xd0;
 } BallFlyingState;
 
 

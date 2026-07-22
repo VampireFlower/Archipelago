@@ -3,8 +3,10 @@
 #ifndef MGTT_TYPES_H
 #define MGTT_TYPES_H
 
+typedef int* ptr;
+
 // big bool
-typedef enum BOOL {
+typedef enum BOOL : int {
     FALSE,
     TRUE
 } BOOL;

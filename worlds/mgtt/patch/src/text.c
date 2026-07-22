@@ -3,14 +3,13 @@
 
 TextBlock* mytext;
 
+// code based on DrawShotEndText
 void TextDraw(TextBlock* block) {
     
     mtx44 projection;
     mtx identity;
 
-    C_MTXOrtho(
-        projection,0,480,0,640,0,-1000
-    );
+    C_MTXOrtho(projection, 0, 480, 0, 640, 0, -1000);
 
     GXSetProjection(projection, 1);
 
