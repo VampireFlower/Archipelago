@@ -1,7 +1,5 @@
 INCLUDE auto_symbols.ld
 
-recording = 0x80127f60;
-
 OUTPUT_FORMAT("elf32-powerpc")
 OUTPUT_ARCH(powerpc)
 
@@ -43,16 +41,25 @@ SECTIONS
 
 }
 
-cos = 0x80009618;
+recording = .;
+
+
+cosf = 0x80009618;
 
 malloc_from = 0x8001a628;
 malloc      = 0x8001a670;
 free        = 0x8001a85c;
+
+GetHeapID      = 0x8001a8c8;
+GetRandomInt   = 0x8001a8f0;
+GetRandomFloat = 0x8001aa54;
+
+
 OSReport    = 0x8001d20c;
 add_to_render_queue = 0x8001e924;
 
 
-sin = 0x8002157c;
+sinf = 0x8002157c;
 
 
 TextBlockStateMachine = 0x80024698;

@@ -10,18 +10,14 @@
 
 
 
-float cos(float);
-float sin(float);
-
-
-
 
 void* malloc(int);
 void* malloc_from(int heap, int);
 void  free(void*);
+int   GetHeapID(); // which heap the current thread uses
 
-
-
+int GetRandomInt(); // 31 bits, guaranteed >= 0
+float GetRandomFloat(); // 0 to 1
 
 typedef int TextBlock;
 

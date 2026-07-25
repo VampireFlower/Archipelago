@@ -53,7 +53,7 @@ args = [patch/sys.platform/'gcc',
         ] + source_files
 
 args.append("-fno-use-linker-plugin")
-args.append("-Wno-builtin-declaration-mismatch")
+#args.append("-Wno-builtin-declaration-mismatch")
 #args.append("-ffreestanding")
 
 

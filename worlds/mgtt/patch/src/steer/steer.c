@@ -1,8 +1,7 @@
-#include <mgtt.h>
 #include <ball.h>
+#include <math.h>
+#include <mgtt.h>
 
-float fabsf(float);
-float powf(float, float);
 
 /*
  * Based on an observed launch horizontal speed near 4.0.
@@ -171,20 +170,19 @@ void ball_steer(BallFlyingState* ball, float stick_x)
         turn_rate = maximum_turn_rate;
 
     angle =
-        BALL_STEER_DIRECTION_SIGN *
         stick_x *
         turn_rate *
         dt;
 
-    sine = sin(angle);
-    cosine = cos(angle);
+    sine = sinf(angle);
+    cosine = cosf(angle);
 
     new_x =
-        velocity->x * cosine +
+        velocity->x * cosine -
         velocity->z * sine;
 
     new_z =
-        velocity->z * cosine -
+        velocity->z * cosine +
         velocity->x * sine;
 
     /*
