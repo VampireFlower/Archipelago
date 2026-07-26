@@ -57,7 +57,7 @@ GetRandomFloat = 0x8001aa54;
 
 OSReport    = 0x8001d20c;
 add_to_render_queue = 0x8001e924;
-
+ProjectOnScreen = 0x8001ebac;
 
 sinf = 0x8002157c;
 
@@ -221,3 +221,5 @@ TextBlocks = 0x802cc050;
 DrawShotEndText = 0x80431610;
 
 ShotReplayCount = 0x805052a4;
+
+FlyingCameraAngle = 0x8050f128;

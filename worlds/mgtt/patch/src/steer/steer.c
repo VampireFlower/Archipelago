@@ -102,7 +102,7 @@ void ball_steer(BallFlyingState* ball, float stick_x)
     float correction;
 
 
-    Vec3* velocity = &ball->velocity;
+    Vec3f* velocity = &ball->velocity;
 
     extern float recording[];
 

@@ -26,7 +26,7 @@ typedef struct {
     float x;
     float y;
     float z;
-} Vec3;
+} Vec3f;
 
 typedef struct {
     float x;
@@ -36,6 +36,12 @@ typedef struct {
 } Quaternion;
 
 
+
+typedef struct {
+    Vec3f eye;
+    Vec3f target;
+
+} Camera;
 
 
 

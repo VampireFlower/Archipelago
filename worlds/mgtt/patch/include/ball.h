@@ -30,9 +30,9 @@ typedef enum {
 
 
 typedef struct BallRestingState {
-    Vec3 position;
+    Vec3f position;
     Quaternion rotation;
-    Vec3 contactNormal;
+    Vec3f contactNormal;
     bool isHoled;
     byte lieFlags; // Course geometry reports lie ID along with 2 boolean flags. OB and hazard related
     bool isUnderwater;
@@ -42,7 +42,7 @@ typedef struct BallRestingState {
 
 
 typedef struct BallFlyingState {
-    Vec3 pipeExitPosition;
+    Vec3f pipeExitPosition;
     int pipeLerpFramesRemaining;
     int field_0x10;
     float field_0x14;
@@ -51,13 +51,13 @@ typedef struct BallFlyingState {
     float field_0x20;
     byte spin_type;
     byte field_0x25;
-    Vec3 field_0x28;
-    Vec3 field_0x34;
+    Vec3f field_0x28;
+    Vec3f field_0x34;
     int field_0x40;
     float field_0x44;
     int flightContext;
     int state;
-    Vec3 velocity;
+    Vec3f velocity;
     float spinrate;
     Quaternion rotation;
     sbyte owner;
@@ -69,15 +69,15 @@ typedef struct BallFlyingState {
     byte field_0x76;
     byte field_0x77;
     byte field_0x78;
-    Vec3 field_0x7c;
+    Vec3f field_0x7c;
     byte field_0x88;
     byte booSFXcooldown;
     int groundCollisionCount;
     uint groundFramesConsecutive;
     int physicsStepIndex;
     uint shotUpdateCount;
-    Vec3 position;
-    Vec3 contactNormal;
+    Vec3f position;
+    Vec3f contactNormal;
     LieID firstContact;
     LieID lie; // set by contact surface when rolling. during flight, raycast to the ground once every 8 frames if the ball is moving downwards
     int lieQuality;
