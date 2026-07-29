@@ -33,7 +33,28 @@ void add_to_render_queue(float depth, void* drawer, int arg, int priority);
 
 
 
+typedef struct Camera {
+    Vec3f eye;
+    Vec3f target;
+    float width;
+    float height;
+    float fov;
+    float nearClip;
+    float farClip;
+    float aspect;
+    mtx view;
+    mtx forwardView;
+    mtx field_0x9c;
+    mtx44 projection;
+    BOOL ortho;
+    float misc[13];
+    mtx field_0x144;
+    float field_0x174;
+    float field_0x178;
+} Camera;
 
+extern Camera camera; // 8026c7c0
+extern Camera* pCamera; // 802d7e64
 
 
 extern uint ShotReplayCount; // 805052a4

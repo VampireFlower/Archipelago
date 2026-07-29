@@ -5,7 +5,7 @@
 
 typedef int* ptr;
 
-// big bool
+// integer sized boolean
 typedef enum BOOL : int {
     FALSE,
     TRUE
@@ -36,12 +36,6 @@ typedef struct {
 } Quaternion;
 
 
-
-typedef struct {
-    Vec3f eye;
-    Vec3f target;
-
-} Camera;
 
 
 
