@@ -44,7 +44,10 @@ SECTIONS
 recording = .;
 
 
+/* FUNCTIONS */
+
 cosf = 0x80009618;
+atan2 = 0x80019e30;
 
 malloc_from = 0x8001a628;
 malloc      = 0x8001a670;
@@ -191,16 +194,29 @@ _restgpr_31_x = 0x8002e350;
 
 
 PSMTXIdentity = 0x8003c354;
+PSMTXCopy = 0x8003c3ec;
+PSMTXConcat = 0x8003c6c8;
+PSMTXTranspose = 0x8003c9f0;
+PSMTXInverse = 0x8003ccec;
+PSMTXInvXpose = 0x8003d000;
+PSMTXMultVec = 0x8003df20;
+PSMTXMultVecSR = 0x8003e280;
+
 C_MTXOrtho = 0x8003e684;
 
+PSVECAdd = 0x8003fb4c;
+PSVECSubtract = 0x8003fba4;
+PSVECScale = 0x8003fbf0;
+PSVECNormalize = 0x8003fcd4;
+PSVecSquareMag = 0x8003fd3c;
+PSVECMag = 0x8003fde8;
+PSVECDotProduct = 0x8003fe5c;
+PSVECCrossProduct = 0x8003fec8;
+PSVECSquareDistance = 0x800400ec
+PSVECDistance = 0x800401c0;
 
-strcpy    = 0x80072600;
-strlen    = 0x80072678;
-strncmp   = 0x800726a0;
-memmove   = 0x80072710;
-memcmp    = 0x80072798;
-memset    = 0x800727d0;
-memcpy    = 0x800727f8;
+
+
 
 
 GXSetTexCoordGen2 = 0x80068814;
@@ -216,10 +232,24 @@ GXSetProjection   = 0x8006fcc0;
 GXLoadPosMtxImm   = 0x8006fe10;
 
 
+strcpy    = 0x80072600;
+strlen    = 0x80072678;
+strncmp   = 0x800726a0;
+memmove   = 0x80072710;
+memcmp    = 0x80072798;
+memset    = 0x800727d0;
+memcpy    = 0x800727f8;
+
+
+
+/* DATA */
+
 TextBlocks = 0x802cc050;
 
 DrawShotEndText = 0x80431610;
 
 ShotReplayCount = 0x805052a4;
+
+SecondaryCamera = 0x80505408;
 
 FlyingCameraAngle = 0x8050f128;

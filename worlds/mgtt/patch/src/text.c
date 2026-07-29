@@ -1,13 +1,17 @@
 #include <mgtt.h>
+#include <text.h>
+#include <mtx.h>
 #include <gx.h>
+
+
 
 TextBlock* mytext;
 
 // code based on DrawShotEndText
 void TextDraw(TextBlock* block) {
     
-    mtx44 projection;
-    mtx identity;
+    Mtx44 projection;
+    Mtx identity;
 
     C_MTXOrtho(projection, 0, 480, 0, 640, 0, -1000);
 
