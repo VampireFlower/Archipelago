@@ -46,8 +46,12 @@ recording = .;
 
 /* FUNCTIONS */
 
-cosf = 0x80009618;
-atan2 = 0x80019e30;
+
+cosf   = 0x80009618;
+
+hypot  = 0x80019da4;
+hypot3 = 0x80019de8;
+atan2f = 0x80019e30;
 
 malloc_from = 0x8001a628;
 malloc      = 0x8001a670;
@@ -204,16 +208,16 @@ PSMTXMultVecSR = 0x8003e280;
 
 C_MTXOrtho = 0x8003e684;
 
-PSVECAdd = 0x8003fb4c;
-PSVECSubtract = 0x8003fba4;
-PSVECScale = 0x8003fbf0;
-PSVECNormalize = 0x8003fcd4;
-PSVecSquareMag = 0x8003fd3c;
-PSVECMag = 0x8003fde8;
-PSVECDotProduct = 0x8003fe5c;
-PSVECCrossProduct = 0x8003fec8;
-PSVECSquareDistance = 0x800400ec
-PSVECDistance = 0x800401c0;
+PSVECAdd            = 0x8003fb4c;
+PSVECSubtract       = 0x8003fba4;
+PSVECScale          = 0x8003fbf0;
+PSVECNormalize      = 0x8003fcd4;
+PSVecSquareMag      = 0x8003fd3c;
+PSVECMag            = 0x8003fde8;
+PSVECDotProduct     = 0x8003fe5c;
+PSVECCrossProduct   = 0x8003fec8;
+PSVECSquareDistance = 0x800400ec;
+PSVECDistance       = 0x800401c0;
 
 
 
@@ -232,13 +236,19 @@ GXSetProjection   = 0x8006fcc0;
 GXLoadPosMtxImm   = 0x8006fe10;
 
 
-strcpy    = 0x80072600;
-strlen    = 0x80072678;
-strncmp   = 0x800726a0;
-memmove   = 0x80072710;
-memcmp    = 0x80072798;
-memset    = 0x800727d0;
-memcpy    = 0x800727f8;
+__fixdfdi   = 0x800712fc; /* double to long long */
+__floatdidf = 0x800714d4; /* long long to double */
+
+strcpy  = 0x80072600;
+strlen  = 0x80072678;
+strncmp = 0x800726a0;
+memmove = 0x80072710;
+memcmp  = 0x80072798;
+memset  = 0x800727d0;
+memcpy  = 0x800727f8;
+tanf    = 0x80072828;
+acosf   = 0x80072940;
+asinf   = 0x80072a28;
 
 
 
@@ -253,3 +263,5 @@ ShotReplayCount = 0x805052a4;
 SecondaryCamera = 0x80505408;
 
 FlyingCameraAngle = 0x8050f128;
+TRY_BEHIND_CUP_CAMERA = 0x8050f14c;
+TRY_ACTION_CUP_CAMERA = 0x8050f150;

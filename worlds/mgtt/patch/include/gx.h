@@ -1,4 +1,5 @@
 #include <types.h>
+#include <mtx.h>
 
 #ifndef MGTT_GX_H
 #define MGTT_GX_H
