@@ -118,6 +118,7 @@ for line in nm.stdout.splitlines():
     address, kind, symbol = line.split()
     
     if kind == 'A': continue # not novel information
+    if kind == 't': continue # ignore local labels
     
     symbols[symbol] = int(address, 16)
 

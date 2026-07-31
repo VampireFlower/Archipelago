@@ -85,7 +85,7 @@ typedef struct BallFlyingState {
     int field_0xc4;
     byte lieFlags;
     struct ShotParameters* shotParameters;
-    int field_0xd0;
+    int specialHazard;
 } BallFlyingState;
 
 

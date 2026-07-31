@@ -1,4 +1,5 @@
 #80417b00
+.global steer_asm
 steer_asm:
 stwu sp,-0x10(sp)
 mflr r0
@@ -6,7 +7,7 @@ stw  r0,0x14(sp)
 stw  r3,8(sp) # backup arg
 
 
-lwz  r0,0x48(r3) #flight context
+lwz  r0,0x48(r3) # flight context
 cmpwi r0,1
 
 bne ret

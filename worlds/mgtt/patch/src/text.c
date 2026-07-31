@@ -1,7 +1,7 @@
-#include <mgtt.h>
-#include <text.h>
-#include <mtx.h>
 #include <gx.h>
+#include <mgtt.h>
+#include <mtx.h>
+#include <text.h>
 
 
 
@@ -40,12 +40,13 @@ void TextDraw(TextBlock* block) {
 
 }
 
+extern bool active;
 
 void TextManager(void)
 {
     char input = *(char*)0x8026bb60;
 
-    if (input == 1) { 
+    if (active) { 
         if (!mytext){
             mytext = TextBlockActivate(368,192,320,192,1,20);
             TextBlockConfigure(mytext, 0, 8, 28, 1);

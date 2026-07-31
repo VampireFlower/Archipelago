@@ -14,6 +14,13 @@ hooks = [
     "type": "b"
     },
     {
+    "name": "steer_camera_hook",
+    "file": "golf",
+    "origin": 0x80456e94,
+    "target": "steer_camera_asm",
+    "type": "b"
+    },
+    {
     "name": "strokes_hook",
     "file": "golf",
     "origin": 0x8041344C,

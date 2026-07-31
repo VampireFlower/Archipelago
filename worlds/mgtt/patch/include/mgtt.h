@@ -49,10 +49,11 @@ extern Camera SecondaryCamera; // 80505408
 extern Camera* pCamera; // 802d7e64
 
 
+extern uint ShotReplayCount;       // 805052a4
 
+extern int  FlyingCameraAngle;     // 8050f128
 extern BOOL TRY_BEHIND_CUP_CAMERA; // 8050f14c
 extern BOOL TRY_ACTION_CUP_CAMERA; // 8050f150
-extern uint ShotReplayCount; // 805052a4
 
 
 #endif
