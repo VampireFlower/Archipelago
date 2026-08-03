@@ -14,6 +14,7 @@
 
 void* malloc(int);
 void* malloc_from(int heap, int);
+void* memcpy(void* dst, void* src, uint size);
 void  free(void*);
 int   GetHeapID(); // which heap the current thread uses
 

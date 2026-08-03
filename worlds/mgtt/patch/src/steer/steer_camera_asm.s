@@ -3,6 +3,13 @@
 BallFlightCameraUpdate_asm:
 fmr f23, f1      # default instruction
 
+
+lis r11,    0x804e
+ori r11,r11,0xcde0 # Player **
+lwz r11,0(r11)     # Player *
+lwz r3, 8(r11)     # Player->golfBall
+
+
 bl SeekingCamera
 
 xori  3,r3,1         # !SeekingCamera();

@@ -1,10 +1,15 @@
+#include <ball.h>
 #include <mgtt.h>
 #include <mtx.h>
 #include <types.h>
 
+static void VECCopy(Vec3f* dst, Vec3f* src) {
+    *dst = *src;
+}
+
 bool active;
 
-bool SeekingCamera() {
+bool SeekingCamera(GolfBall* ball) {
 
     active = false; // debug
 
@@ -24,6 +29,14 @@ bool SeekingCamera() {
     // Disable special hazard cameras
     *(int*)0x80502810 = 0;
 
+
+    static Vec3f offset;
+    if (ball->flyingState.shotUpdateCount == 0) {
+        VECSubtract(&camera.eye, &ball->restingState.position, &offset);
+    } else {
+        VECCopy(&camera.target, &ball->flyingState.position);
+        VECAdd(&camera.target, &offset, &camera.eye);
+    }
     return true;
 
 

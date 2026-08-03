@@ -251,8 +251,11 @@ acosf   = 0x80072940;
 asinf   = 0x80072a28;
 
 
+ResolveCameraCollision = 0x804557d4;
+
 
 /* DATA */
+camera = 0x8026c7c0;
 
 TextBlocks = 0x802cc050;
 
