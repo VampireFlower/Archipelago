@@ -5,10 +5,7 @@ import sys
 from pathlib import Path
 
 
-from hooks import hooks
-
-
-
+DEBUG = False
 
 
 patch = Path(__file__).parent
@@ -35,25 +32,31 @@ buc_bytes = mgtt.decompress(buc.read_bytes())[0]
 
 
 
+from hooks import hooks
+# add symbol names for hook locations
+with open(build/"auto_symbols.ld", "w") as f:
+    for hook in hooks:
+        f.write(f"{hook['name']} = {hook['origin']:#x};\n")
 
 
-source_files = [file for file in src.rglob('*.[sc]')]
+source_files = [file for file in src.rglob('*.[Ssc]')]
 
 
 args = [patch/sys.platform/'gcc',
         '-Os',        # optimize for size
-        '-c',         # output object files
         '-fno-pic',   # generate code that expects to load at a fixed address
+        '-nostdlib',  # do not pull in the C runtime
         '-mregnames', # allow usage of register names in assembly source
         '-mno-sdata', # SDA is already taken
-        '-B', patch/sys.platform, # tell gcc where to find executables it depends on
+        '-T', patch/'link.ld', # linker script
         '-I', patch/'include',
-        '-fno-asynchronous-unwind-tables' # omit section .eh_frame
+        '-B', patch/sys.platform, # tell gcc where to find executables it depends on
+        '-fno-asynchronous-unwind-tables', # omit section .eh_frame
+        '-S' if DEBUG else '-oblob.elf'
         ] + source_files
 
-args.append("-fno-use-linker-plugin")
-#args.append("-Wno-builtin-declaration-mismatch")
-#args.append("-ffreestanding")
+#args.append("-fno-use-linker-plugin")
+
 
 
 gcc = subprocess.run(args, cwd=build, text=True)
@@ -61,34 +64,15 @@ gcc = subprocess.run(args, cwd=build, text=True)
 if gcc.returncode != 0:
     raise Exception("Compilation failed!")
 
-
-
-# add symbol names for hook locations
-with open(build/"auto_symbols.ld", "w") as f:
-    for hook in hooks:
-        f.write(f"{hook['name']} = {hook['origin']:#x};\n")
-
-
-
-
-object_files = [file for file in build.glob("*.o")]
-
-args = [patch/sys.platform/'ld',
-        '-T', patch/'link.ld',
-        '-o', 'blob.elf'
-        ] + object_files
-
-ld = subprocess.run(args, cwd=build, text=True)
-
-if ld.returncode != 0:
-    raise Exception("Linking failed!")
-
+if DEBUG:
+    print("Success!\nCompiled:", [file.stem for file in source_files if file.suffix == '.c'])
+    exit()
 
 
 
 args = [patch/sys.platform/'objcopy',
         '-O', 'binary', # output type
-        'blob.elf',     # input
+        (build/'blob.elf').resolve(),     # input
         'dump.bin'      # output
         ]
 

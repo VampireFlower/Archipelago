@@ -49,9 +49,9 @@ recording = .;
 
 cosf   = 0x80009618;
 
-hypot  = 0x80019da4;
-hypot3 = 0x80019de8;
-atan2f = 0x80019e30;
+hypotf  = 0x80019da4;
+hypot3f = 0x80019de8;
+atan2f  = 0x80019e30;
 
 malloc_from = 0x8001a628;
 malloc      = 0x8001a670;
