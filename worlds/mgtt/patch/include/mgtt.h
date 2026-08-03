@@ -28,6 +28,7 @@ void add_to_render_queue(float depth, void* drawer, int arg, int priority);
 typedef struct Camera {
     Vec3f eye;
     Vec3f target;
+    Vec3f up;
     float width;
     float height;
     float fov;
