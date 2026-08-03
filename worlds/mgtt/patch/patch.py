@@ -48,16 +48,12 @@ args = [patch/sys.platform/'gcc',
         '-nostdlib',  # do not pull in the C runtime
         '-mregnames', # allow usage of register names in assembly source
         '-mno-sdata', # SDA is already taken
-        '-T', patch/'link.ld', # linker script
+        '-T', patch/'link.ld',
         '-I', patch/'include',
         '-B', patch/sys.platform, # tell gcc where to find executables it depends on
         '-fno-asynchronous-unwind-tables', # omit section .eh_frame
         '-S' if DEBUG else '-oblob.elf'
         ] + source_files
-
-#args.append("-fno-use-linker-plugin")
-
-
 
 gcc = subprocess.run(args, cwd=build, text=True)
 
@@ -72,7 +68,7 @@ if DEBUG:
 
 args = [patch/sys.platform/'objcopy',
         '-O', 'binary', # output type
-        (build/'blob.elf').resolve(),     # input
+        'blob.elf',     # input
         'dump.bin'      # output
         ]
 

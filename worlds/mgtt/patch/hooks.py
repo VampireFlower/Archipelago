@@ -14,10 +14,17 @@ hooks = [
     "type": "b"
     },
     {
-    "name": "steer_camera_hook",
+    "name": "SelectBallFlightCamera_asm_hook",
+    "file": "golf",
+    "origin": 0x8045517c,
+    "target": "SelectBallFlightCamera_asm",
+    "type": "b"
+    },
+    {
+    "name": "BallFlightCameraUpdate_asm_hook",
     "file": "golf",
     "origin": 0x80456e94,
-    "target": "steer_camera_asm",
+    "target": "BallFlightCameraUpdate_asm",
     "type": "b"
     },
     {
