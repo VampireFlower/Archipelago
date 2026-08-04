@@ -163,12 +163,12 @@ else:
 
         branch = make_hook_branch(hook)
 
-        gecko += f'04{hook["origin"]:08x}'[2:] + f' {branch.hex()}\n'
+        gecko += '04' + f'{hook["origin"]:08x}'[2:] + f' {branch.hex()}\n'
 
 
     source= f'''
-    lis r3,   0x8012
-    ori r3,r3,0x7f60 # freespace
+    lis r3,   0x8052
+    ori r3,r3,0x47B4 # freespace
 
     bl foo
     foo:
