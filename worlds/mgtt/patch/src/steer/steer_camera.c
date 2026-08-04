@@ -37,6 +37,18 @@ bool SeekingCamera(GolfBall* ball) {
         VECCopy(&camera.target, &ball->flyingState.position);
         VECAdd(&camera.target, &offset, &camera.eye);
     }
+
+
+    extern bool ResolveCameraCollision(
+        float sweepRadius,
+        float groundClearance,
+        Vec3f* eye,
+        Vec3f* target,
+        bool verticalOnly
+    );
+
+    ResolveCameraCollision(0.032, 2.24, &camera.eye, &camera.target, false);
+
     return true;
 
 
