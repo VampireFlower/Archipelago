@@ -10,7 +10,7 @@ MEMORY
     ram (rwx) : ORIGIN = 0x805247b4, LENGTH = 0x2B84C
 }
 
-REGION_ALIAS("freespace", xfb)
+REGION_ALIAS("freespace", ram)
 
 SECTIONS
 {

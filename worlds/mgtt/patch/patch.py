@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 DEBUG_ASM = False
-GECKO = True
+GECKO     = False
 
 
 patch = Path(__file__).parent
