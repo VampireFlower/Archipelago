@@ -26,12 +26,5 @@ hooks = [
     "origin": 0x80456e94,
     "target": "BallFlightCameraUpdate_asm",
     "type": "b"
-    },
-    {
-    "name": "strokes_hook",
-    "file": "golf",
-    "origin": 0x8041344C,
-    "target": 0x80413450,
-    "type": "b"
     }
 ]
