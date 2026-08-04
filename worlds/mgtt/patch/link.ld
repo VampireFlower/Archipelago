@@ -250,6 +250,9 @@ tanf    = 0x80072828;
 acosf   = 0x80072940;
 asinf   = 0x80072a28;
 
+CopyRestToFlying = 0x80414970;
+CopyFlyingToRest = 0x80414a1c;
+
 
 ResolveCameraCollision = 0x804557d4;
 
@@ -260,6 +263,9 @@ camera = 0x8026c7c0;
 TextBlocks = 0x802cc050;
 
 DrawShotEndText = 0x80431610;
+
+BallRestSimulated       = 0x80502768;
+TotalBallFlightDuration = 0x80502800;
 
 ShotReplayCount = 0x805052a4;
 

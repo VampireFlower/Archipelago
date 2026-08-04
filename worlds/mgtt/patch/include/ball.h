@@ -40,6 +40,18 @@ typedef struct BallRestingState {
     uint lieQuality;
 } BallRestingState;
 
+typedef enum : uint {
+    BALL_STATE_0,
+    BALL_INACTIVE,
+    BALL_FLYING,
+    BALL_ROLLING,
+    BALL_IN_CUP,
+    BALL_STATE_5,
+    BALL_MARKER,
+    BALL_PIPE_LERP,
+    BALL_PIPE_FLYING
+} BallMotion;
+
 
 typedef struct BallFlyingState {
     Vec3f pipeExitPosition;
@@ -56,7 +68,7 @@ typedef struct BallFlyingState {
     int field_0x40;
     float field_0x44;
     int flightContext;
-    int state;
+    BallMotion state;
     Vec3f velocity;
     float spinrate;
     Quaternion rotation;
@@ -119,5 +131,14 @@ typedef struct GolfBall {
 
 } GolfBall;
 
+
+// these belong to the sim line, not the ball
+extern BallRestingState BallRestSimulated; // 80502768
+extern int TotalBallFlightDuration; // 80502800
+
+
+
+void CopyFlyingToRest(BallFlyingState*, BallRestingState*);
+void CopyRestToFlying(BallRestingState*, BallFlyingState*);
 
 #endif
