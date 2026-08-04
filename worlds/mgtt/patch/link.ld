@@ -10,34 +10,36 @@ MEMORY
     ram (rwx) : ORIGIN = 0x805247b4, LENGTH = 0x2B84C
 }
 
+REGION_ALIAS("freespace", xfb)
+
 SECTIONS
 {
-    . = ORIGIN(ram);
+    . = ORIGIN(freespace);
 
     .text : ALIGN(4)
     {
         *(.text)
         *(.text.*)
-    } > ram
+    } > freespace
 
     .rodata : ALIGN(4)
     {
         *(.rodata)
         *(.rodata.*)
-    } > ram
+    } > freespace
 
     .data : ALIGN(4)
     {
         *(.data)
         *(.data.*)
-    } > ram
+    } > freespace
 
     .bss (NOLOAD) : ALIGN(4)
     {
         *(.bss)
         *(.bss.*)
         *(COMMON)
-    } > ram
+    } > freespace
 
 }
 
