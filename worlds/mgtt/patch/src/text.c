@@ -40,13 +40,12 @@ void TextDraw(TextBlock* block) {
 
 }
 
-extern bool active;
-
 void TextManager(void)
 {
+    return;
     char input = *(char*)0x8026bb60;
 
-    if (active) { 
+    if (input) { 
         if (!mytext){
             mytext = TextBlockActivate(368,192,320,192,1,20);
             TextBlockConfigure(mytext, 0, 8, 28, 1);
