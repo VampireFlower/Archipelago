@@ -9,7 +9,7 @@ TextBlock* mytext;
 
 // code based on DrawShotEndText
 void TextDraw(TextBlock* block) {
-    
+    return;
     Mtx44 projection;
     Mtx identity;
 
