@@ -51,6 +51,7 @@ args = [patch/sys.platform/'gcc',
         '-I', patch/'include',
         '-B', patch/sys.platform, # tell gcc where to find executables it depends on
         '-fno-asynchronous-unwind-tables', # omit section .eh_frame
+        '-fno-use-linker-plugin',
         '-S' if DEBUG_ASM else '-oblob.elf'
         ] + source_files
 

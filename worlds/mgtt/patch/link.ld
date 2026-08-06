@@ -199,13 +199,13 @@ _restgpr_31_x = 0x8002e350;
 
 
 
-PSMTXIdentity = 0x8003c354;
-PSMTXCopy = 0x8003c3ec;
-PSMTXConcat = 0x8003c6c8;
+PSMTXIdentity  = 0x8003c354;
+PSMTXCopy      = 0x8003c3ec;
+PSMTXConcat    = 0x8003c6c8;
 PSMTXTranspose = 0x8003c9f0;
-PSMTXInverse = 0x8003ccec;
-PSMTXInvXpose = 0x8003d000;
-PSMTXMultVec = 0x8003df20;
+PSMTXInverse   = 0x8003ccec;
+PSMTXInvXpose  = 0x8003d000;
+PSMTXMultVec   = 0x8003df20;
 PSMTXMultVecSR = 0x8003e280;
 
 C_MTXOrtho = 0x8003e684;
