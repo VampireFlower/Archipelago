@@ -1,11 +1,11 @@
-#80456e94
+#8045bb64
 .global BallFlightCameraUpdate_asm
 BallFlightCameraUpdate_asm:
-fmr f23, f1      # default instruction
+fmr f27, f1      # default instruction
 
 
-lis r11,    0x804e
-ori r11,r11,0xcde0 # Player **
+lis r11,    0x804f
+ori r11,r11,0xf240 # Player **
 lwz r11,0(r11)     # Player *
 lwz r3, 8(r11)     # Player->golfBall
 
@@ -13,7 +13,7 @@ lwz r3, 8(r11)     # Player->golfBall
 bl SeekingCamera
 
 xori  3,r3,1         # !SeekingCamera();
-lwz   r9,-0xed8(r24) # load switch value
+lwz   r9,0x3f88(r25) # load switch value
 mullw r9,r9,r3
 
 # if seekingcamera returns true: r9 * 0 = 0
@@ -24,7 +24,7 @@ b BallFlightCameraUpdate_asm_hook + 4
 
 
 
-#80455178
+#8045867c
 .global SelectBallFlightCamera_asm
 SelectBallFlightCamera_asm:
 
@@ -33,11 +33,11 @@ SelectBallFlightCamera_asm:
 bne continue
 
 # epilogue
-lfd  f31,0x60(sp)
-lmw  r26,0x48(sp)
-lwz  r0,0x6c(sp)
+lfd  f31,0x70(sp)
+lmw  r25,0x54(sp)
+lwz  r0,0x7c(sp)
 mtlr r0
-addi sp,sp,0x68
+addi sp,sp,0x78
 blr
 
 continue:

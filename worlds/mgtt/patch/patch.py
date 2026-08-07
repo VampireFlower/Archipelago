@@ -25,8 +25,8 @@ build.mkdir()
 
 game_dir = mgtt.get_disc("compressed")
 dol = mgtt.DOL(game_dir/'sys'/'main.dol')
-clv = (game_dir/'files'/'C'/'L'/'V')
-buc = (game_dir/'files'/'B'/'U'/'C')
+clv = (game_dir/'files'/'D'/'B'/'S')
+buc = (game_dir/'files'/'B'/'A'/'N')
 clv_bytes = mgtt.decompress(clv.read_bytes())[0]
 buc_bytes = mgtt.decompress(buc.read_bytes())[0]
 
@@ -42,7 +42,7 @@ source_files = [file for file in src.rglob('*.[Ssc]')]
 
 
 args = [patch/sys.platform/'gcc',
-        '-Os',        # optimize for size
+        '-O3',        # optimize for speed
         '-fno-pic',   # generate code that expects to load at a fixed address
         '-nostdlib',  # do not pull in the C runtime
         '-mregnames', # allow usage of register names in assembly source
@@ -150,7 +150,7 @@ if GECKO == False:
                 buc_bytes[trampoline:trampoline+4] = branch
 
 
-    dol.add_text((build/'dump.bin').read_bytes(), 0x805247b4)
+    dol.add_text((build/'dump.bin').read_bytes(), 0x80539674)
     dol.save()
     clv.write_bytes(mgtt.compress(clv_bytes))
     buc.write_bytes(mgtt.compress(buc_bytes))

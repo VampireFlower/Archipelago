@@ -729,7 +729,10 @@ bool SeekingCamera(GolfBall* ball)
     TRY_ACTION_CUP_CAMERA = false;
 
     // Disable special hazard cameras
-    *(int*)0x80502810 = 0;
+    *(int*)0x80514c90 = 0;
+    
+    // action cup or something idk
+    *(int*)0x80523fb8 = 0;
 
     /*
      * A reused GolfBall object is detected by shotUpdateCount returning to

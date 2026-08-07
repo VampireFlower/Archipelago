@@ -1,29 +1,22 @@
 hooks = [
     {
-    "name": "Text_hook",
-    "file": "dol",
-    "origin": 0x80018f48,
-    "target": "TextManager",
-    "type": "bl"
-    },
-    {
     "name": "steer_hook",
     "file": "golf",
-    "origin": 0x80417b00,
+    "origin": 0x80418718,
     "target": "steer_asm",
     "type": "b"
     },
     {
     "name": "SelectBallFlightCamera_asm_hook",
     "file": "golf",
-    "origin": 0x8045517c,
+    "origin": 0x8045867c,
     "target": "SelectBallFlightCamera_asm",
     "type": "b"
     },
     {
     "name": "BallFlightCameraUpdate_asm_hook",
     "file": "golf",
-    "origin": 0x80456e94,
+    "origin": 0x8045bb64,
     "target": "BallFlightCameraUpdate_asm",
     "type": "b"
     }

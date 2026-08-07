@@ -1,4 +1,4 @@
-#80417b00
+#80418718
 .global steer_asm
 steer_asm:
 stwu sp,-0x10(sp)
@@ -15,8 +15,8 @@ bne ret
 
 
 # pss->player
-lis r11,    0x804e
-ori r11,r11,0xcde0 # Player **
+lis r11,    0x804f
+ori r11,r11,0xf240 # Player **
 lwz r11,0(r11)     # Player *
 
 lwz r11,0x4f14(r11) # Player->controller
