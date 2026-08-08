@@ -150,7 +150,7 @@ if GECKO == False:
                 buc_bytes[trampoline:trampoline+4] = branch
 
 
-    dol.add_text((build/'dump.bin').read_bytes(), 0x80539674)
+    dol.add_text((build/'dump.bin').read_bytes(), 0x80539680)
     dol.save()
     clv.write_bytes(mgtt.compress(clv_bytes))
     buc.write_bytes(mgtt.compress(buc_bytes))

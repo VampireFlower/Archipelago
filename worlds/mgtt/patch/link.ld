@@ -5,7 +5,7 @@ OUTPUT_ARCH(powerpc)
 
 MEMORY
 {
-    ram (rwx) : ORIGIN = 0x80539674, LENGTH = 0x1698c
+    ram (rwx) : ORIGIN = 0x80539680, LENGTH = 0x16980
 }
 
 REGION_ALIAS("freespace", ram)
