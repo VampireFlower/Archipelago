@@ -7,7 +7,7 @@ MEMORY
 {
     eva (rwx) : ORIGIN = 0x800014B0, LENGTH = 592
     xfb (rwx) : ORIGIN = 0x80127f60, LENGTH = 0xA020
-    ram (rwx) : ORIGIN = 0x805247b4, LENGTH = 0x2B84C
+    ram (rwx) : ORIGIN = 0x805247c0, LENGTH = 0x2B840
 }
 
 REGION_ALIAS("freespace", ram)

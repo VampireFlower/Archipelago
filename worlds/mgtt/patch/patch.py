@@ -93,10 +93,10 @@ if nm.returncode != 0:
 symbols = {}
 for line in nm.stdout.splitlines():
     address, kind, symbol = line.split()
-    
+
     if kind == 'A': continue # not novel information
     if kind == 't': continue # ignore local labels
-    
+
     symbols[symbol] = int(address, 16)
 
 # Dump symbols for debugging purposes
@@ -129,15 +129,15 @@ if GECKO == False:
     for hook in hooks:
 
         branch = make_hook_branch(hook)
-        
+
         match hook["file"]:
-            
+
             case 'dol':
 
-                trampoline = dol.address_to_offset(hook["origin"])        
+                trampoline = dol.address_to_offset(hook["origin"])
 
                 dol.write_bytes(branch, trampoline)
-            
+
             case 'golf':
 
                 trampoline = hook['origin'] - 0x80400000
@@ -150,7 +150,7 @@ if GECKO == False:
                 buc_bytes[trampoline:trampoline+4] = branch
 
 
-    dol.add_text((build/'dump.bin').read_bytes(), 0x805247b4)
+    dol.add_text((build/'dump.bin').read_bytes(), 0x805247c0)
     dol.save()
     clv.write_bytes(mgtt.compress(clv_bytes))
     buc.write_bytes(mgtt.compress(buc_bytes))
@@ -211,7 +211,7 @@ else:
         bin.extend(b'\x06\x00\x00\x00\x00\x00\x00\x00')
     else:
         bin.extend(b'\x00\x00\x00\x00')
-    
+
     bootstrap = "\n".join(
         f"{word1:08x} {word2:08x}"
         for word1, word2 in struct.iter_unpack(">II", bin)
