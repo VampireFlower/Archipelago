@@ -38,7 +38,7 @@ with open(build/"auto_symbols.ld", "w") as f:
         f.write(f"{hook['name']} = {hook['origin']:#x};\n")
 
 
-source_files = [file for file in src.rglob('*.[Ssc]')]
+source_files = [file for file in src.rglob("*") if file.suffix in (".S", ".s", ".c", ".cpp")]
 
 
 args = [patch/sys.platform/'gcc',

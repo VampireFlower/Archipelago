@@ -9,7 +9,7 @@ TextBlock* mytext;
 
 // code based on DrawShotEndText
 void TextDraw(TextBlock* block) {
-    return;
+
     Mtx44 projection;
     Mtx identity;
 
@@ -42,8 +42,15 @@ void TextDraw(TextBlock* block) {
 
 void TextManager(void)
 {
-    return;
+    
     char input = *(char*)0x8026bb60;
+
+    auto x = ({
+        int y;
+        if (input) y = 1;
+        else y = 0;
+        y;
+    });
 
     if (input) { 
         if (!mytext){
