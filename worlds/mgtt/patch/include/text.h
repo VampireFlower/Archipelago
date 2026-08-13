@@ -5,6 +5,8 @@
 #define MGTT_TEXT_H
 
 
+
+/*         GAME         */
 typedef int TextBlock;
 
 extern TextBlock TextBlocks[]; // 802cc050
@@ -16,5 +18,8 @@ void TextBlockDrawGlyphs(int subsystem, Mtx, int color, int);
 void TextBlockStateMachine(void);
 
 
+
+/*         OURS         */
+void TextManager(void);
 
 #endif
