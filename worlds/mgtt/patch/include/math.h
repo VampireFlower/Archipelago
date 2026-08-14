@@ -16,7 +16,6 @@ float powf(float, float);
 float cosf(float);
 float sinf(float);
 float tanf(float);
-void  sincosf(float x, float *s, float *c);
 float atan2f(float x, float y);
 
 

@@ -22,9 +22,9 @@ SECTIONS
     {
         *(.ctors)
         *(.ctors.*)
+        LONG(0)
     } > freespace
 
-    . += 4;
 
 /* program never exits, so destructors never run
     dtors = .;
@@ -33,6 +33,7 @@ SECTIONS
     {
         *(.dtors)
         *(.dtors.*)
+        LONG(0)
     } > freespace
 
     . += 4;

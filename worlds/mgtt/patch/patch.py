@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 DEBUG_ASM = False
-GECKO     = True
+GECKO     = False
 
 
 patch = Path(__file__).parent
@@ -123,7 +123,7 @@ with open(build/"symbols.txt", "w") as f:
 
 for hook in hooks:
     # if the target is a symbol name, use the address of that symbol name
-    if type(hook["target"]) == str:
+    if type(hook["target"]) is str:
         hook["target"] = symbols[hook["target"]]
 
 
@@ -199,7 +199,6 @@ else:
     blrl
     b ret
 
-    # payload
     .incbin "dump.bin"
 
     ret:
@@ -222,17 +221,16 @@ else:
     bin = bytearray((build/'gecko_bootstrap.bin').read_bytes())
 
     # code must end with 0x00000000
-    if len(bin) % 8 == 0:
-        bin.extend(b'\x60\x00\x00\x00\x00\x00\x00\x00')
-    else:
-        bin.extend(b'\x00\x00\x00\x00')
+    bin.extend(b'\x60\x00\x00\x00\x00\x00\x00\x00') if len(bin) % 8 == 0 else bin.extend(b'\x00\x00\x00\x00')
 
-    bootstrap = "\n".join(
+    payload = "\n".join(
         f"{word1:08x} {word2:08x}"
         for word1, word2 in struct.iter_unpack(">II", bin)
     )
-    gecko += ("C2003268 " + f"{bootstrap.count('\n')+1:08x}\n"
-             + bootstrap)
+
+    c2_line_count = f"{payload.count('\n')+1:08x}"
+
+    gecko += (f"C2003268 {c2_line_count}\n" + payload)
 
     (build/'gecko.txt').write_text(gecko)
 
