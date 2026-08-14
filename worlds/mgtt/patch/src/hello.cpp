@@ -1,18 +1,30 @@
+extern "C" {
+    #include <text.h>
+}
+
 class Hello {
     public:
     int x;
     int y;
-    Hello();
+    Hello(int X = 4, int Y = 5);
+    ~Hello();
 };
 
-Hello::Hello() {
-    this->x = 4;
-    this->y = 5;
+Hello::Hello(int X, int Y) : x(X), y(Y) {
 }
+
+extern int bar;
+Hello X{bar};
 
 void foo() {
 
-    Hello x;
+    Hello x{};
     x.x = 2;
     x.y = 3;
+}
+
+
+
+Hello::~Hello() {
+    TextManager();
 }

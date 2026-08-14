@@ -3,7 +3,7 @@
 #include <mtx.h>
 #include <text.h>
 
-
+int bar = 5;
 
 TextBlock* mytext;
 

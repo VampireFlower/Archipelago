@@ -1,4 +1,4 @@
-INCLUDE auto_symbols.ld
+INCLUDE hook_symbols.ld
 
 OUTPUT_FORMAT("elf32-powerpc")
 OUTPUT_ARCH(powerpc)
@@ -15,6 +15,28 @@ REGION_ALIAS("freespace", ram)
 SECTIONS
 {
     . = ORIGIN(freespace);
+
+    ctors = .; /* so C code knows its address */
+
+    .ctors : ALIGN(4)
+    {
+        *(.ctors)
+        *(.ctors.*)
+    } > freespace
+
+    . += 4;
+
+/* program never exits, so destructors never run
+    dtors = .;
+
+    .dtors : ALIGN(4)
+    {
+        *(.dtors)
+        *(.dtors.*)
+    } > freespace
+
+    . += 4;
+*/
 
     .text : ALIGN(4)
     {

@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 DEBUG_ASM = False
-GECKO     = False
+GECKO     = True
 
 
 patch = Path(__file__).parent
@@ -18,7 +18,8 @@ src   = patch/'src'
 
 if build.exists():
     shutil.rmtree(build)
-    subprocess.run(['git', '-C', mgtt.REPO_ROOT, 'restore', 'discs'])
+    if not DEBUG_ASM:
+        subprocess.run(['git', '-C', mgtt.REPO_ROOT, 'restore', 'discs'])
 
 build.mkdir()
 
@@ -33,13 +34,23 @@ buc_bytes = mgtt.decompress(buc.read_bytes())[0]
 
 from hooks import hooks
 # add symbol names for hook locations
-with open(build/"auto_symbols.ld", "w") as f:
+with open(build/"hook_symbols.ld", "w") as f:
     for hook in hooks:
         f.write(f"{hook['name']} = {hook['origin']:#x};\n")
 
 
 source_files = [file for file in src.rglob("*") if file.suffix in (".S", ".s", ".c", ".cpp")]
 
+cpp = any(".cpp" in file.name for file in source_files)
+
+if cpp:
+    hooks.append({
+        "name": "cpp_dynamic_initializers",
+        "file": "dol",
+      "origin": 0x8000326c,
+      "target": '__init_cpp',
+        'type': "bl"
+    })
 
 args = [patch/sys.platform/'gcc',
         '-Os',        # optimize for size
@@ -56,11 +67,14 @@ args = [patch/sys.platform/'gcc',
         '-S' if DEBUG_ASM else '-oblob.elf'
         ] + source_files
 
-if subprocess.run(args, cwd=build, text=True).returncode != 0:
+if cpp: 
+    args.extend(("-fno-rtti", "-fno-exceptions", '-Wno-complain-wrong-lang'))
+
+if subprocess.run(args, cwd=build).returncode != 0:
     raise Exception("Compilation failed!")
 
 if DEBUG_ASM:
-    print("Success!\nCompiled:", [file.stem for file in source_files if file.suffix == '.c'])
+    print("Success!\nCompiled:", [file.name for file in source_files if file.suffix in ('.c', '.cpp')])
     exit()
 
 
@@ -72,7 +86,7 @@ args = [patch/sys.platform/'objcopy',
         'dump.bin'      # output
         ]
 
-if subprocess.run(args, cwd=build, text=True).returncode != 0:
+if subprocess.run(args, cwd=build).returncode != 0:
     raise Exception("Extracting code failed!")
 
 
@@ -170,7 +184,7 @@ else:
 
     source= f'''
     lis r3,   0x8052
-    ori r3,r3,0x47B4 # freespace
+    ori r3,r3,0x47C0 # freespace
 
     bl foo
     foo:
@@ -202,14 +216,14 @@ else:
         'gecko_bootstrap.bin'
         ]
 
-    if subprocess.run(args, cwd=build, text=True).returncode != 0:
+    if subprocess.run(args, cwd=build).returncode != 0:
         raise Exception("Extracting gecko code failed!")
 
     bin = bytearray((build/'gecko_bootstrap.bin').read_bytes())
 
     # code must end with 0x00000000
     if len(bin) % 8 == 0:
-        bin.extend(b'\x06\x00\x00\x00\x00\x00\x00\x00')
+        bin.extend(b'\x60\x00\x00\x00\x00\x00\x00\x00')
     else:
         bin.extend(b'\x00\x00\x00\x00')
 
@@ -217,8 +231,8 @@ else:
         f"{word1:08x} {word2:08x}"
         for word1, word2 in struct.iter_unpack(">II", bin)
     )
-    gecko += ("C2018428 " + f"{bootstrap.count('\n')+1:08x}\n"
-             + bootstrap + '\n')
+    gecko += ("C2003268 " + f"{bootstrap.count('\n')+1:08x}\n"
+             + bootstrap)
 
     (build/'gecko.txt').write_text(gecko)
 
