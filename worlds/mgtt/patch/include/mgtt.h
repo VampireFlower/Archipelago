@@ -46,6 +46,17 @@ typedef struct Camera {
     float field_0x178;
 } Camera;
 
+
+
+
+
+
+typedef struct GameState {
+    int x;
+} GameState;
+
+extern GameState GameStates;
+
 extern Camera camera; // 8026c7c0
 extern Camera SecondaryCamera; // 80505408
 extern Camera* pCamera; // 802d7e64

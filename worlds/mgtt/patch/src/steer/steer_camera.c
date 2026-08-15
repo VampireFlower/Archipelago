@@ -647,46 +647,6 @@ static void BuildCatchupPose(
 }
 
 
-/*
- * Ensures the resolved eye and target still describe a valid view direction.
- *
- * Collision resolution can move the eye onto or extremely close to the
- * target. That would make the following look-at matrix degenerate.
- */
-static void ValidateResolvedView(Vec3f* eye, Vec3f* target)
-{
-    Vec3f view;
-    Vec3f forward;
-
-    float distance;
-
-    PSVECSubtract(target, eye, &view);
-
-    distance = PSVECMag(&view);
-
-    if (distance >= MIN_LOOK_DISTANCE) return;
-
-    VECNormalize(&view, &forward);
-
-    LimitForwardPitch(&forward);
-
-    target->x =
-        eye->x +
-        forward.x *
-        MIN_LOOK_DISTANCE;
-
-    target->y =
-        eye->y +
-        forward.y *
-        MIN_LOOK_DISTANCE;
-
-    target->z =
-        eye->z +
-        forward.z *
-        MIN_LOOK_DISTANCE;
-}
-
-
 bool SeekingCamera(GolfBall* ball)
 {
     BallCameraState* state;

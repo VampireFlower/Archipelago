@@ -97,7 +97,7 @@ sinf = 0x8002157c;
 TextBlockStateMachine = 0x80024698;
 TextBlockDelete       = 0x80024c98;
 TextBlockConfigure    = 0x80024cfc;
-TextBlockActivate     = 0x80024e04;
+TextBlockCreate       = 0x80024e04;
 TextBlockDrawGlyphs   = 0x80027ecc;
 
 

@@ -3,6 +3,7 @@
 #include <mtx.h>
 #include <text.h>
 
+
 int bar = 5;
 
 TextBlock* mytext;
@@ -31,7 +32,7 @@ void TextDraw(TextBlock* block) {
     GXSetNumChans(0);
     GXSetTexCoordGen2(0,1,4,60);
     
-    TextBlockDrawGlyphs(*(block + 0x95), identity, 0xffffffff, 1);
+    TextBlockDrawGlyphs(*((int*)block + 0x95), identity, 0xffffffff, 1);
 
     // if it isnt deleted, the game automatically picks up on the tb and draws it?!
     // means we can't use effects like typewriter. investigate later
@@ -54,7 +55,7 @@ void TextManager(void)
 
     if (input) { 
         if (!mytext){
-            mytext = TextBlockActivate(368,192,320,192,1,20);
+            mytext = TextBlockCreate(368,192,320,192,1,20);
             TextBlockConfigure(mytext, 0, 8, 28, 1);
         }
         add_to_render_queue(11.0, TextDraw, (int)mytext, 20);

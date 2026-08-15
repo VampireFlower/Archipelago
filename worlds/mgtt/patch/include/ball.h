@@ -56,17 +56,17 @@ typedef enum : uint {
 typedef struct BallFlyingState {
     Vec3f pipeExitPosition;
     int pipeLerpFramesRemaining;
-    int field_0x10;
-    float field_0x14;
-    float field_0x18;
-    float field_0x1c;
-    float field_0x20;
+    int Ox10;
+    float Ox14;
+    float Ox18;
+    float Ox1c;
+    float Ox20;
     byte spin_type;
-    byte field_0x25;
-    Vec3f field_0x28;
-    Vec3f field_0x34;
-    int field_0x40;
-    float field_0x44;
+    byte Ox25;
+    Vec3f Ox28;
+    Vec3f Ox34;
+    int Ox40;
+    float Ox44;
     int flightContext;
     BallMotion state;
     Vec3f velocity;
@@ -78,11 +78,11 @@ typedef struct BallFlyingState {
     bool flagShot;
     byte assistRelated;
     bool underwater;
-    byte field_0x76;
-    byte field_0x77;
-    byte field_0x78;
-    Vec3f field_0x7c;
-    byte field_0x88;
+    byte Ox76;
+    byte Ox77;
+    byte Ox78;
+    Vec3f Ox7c;
+    byte Ox88;
     byte booSFXcooldown;
     int groundCollisionCount;
     uint groundFramesConsecutive;
@@ -94,7 +94,7 @@ typedef struct BallFlyingState {
     LieID lie; // set by contact surface when rolling. during flight, raycast to the ground once every 8 frames if the ball is moving downwards
     int lieQuality;
     uint groundHistoryBitmap;
-    int field_0xc4;
+    int Oxc4;
     byte lieFlags;
     struct ShotParameters* shotParameters;
     int specialHazard;
@@ -112,22 +112,22 @@ typedef struct HoleScore {
 typedef struct GolfBall {
 
     int modeRunningValue;
-    int field_0x4;
+    int Ox4;
     HoleScore scores[18];
     
-    byte field_0x98[28]; // 8040e2a0
+    byte Ox98[28]; // referenced by 8040e2a0
     BallRestingState restingState;
     BallFlyingState flyingState;
 
     byte nStrokes;
     byte nPutts;
     byte completionStatus; // 0: none, 1: normal, 2: give up
-    byte field_0x1bf;
-    byte field_0x1c0;
-    byte field_0x1c1;
-    byte field_0x1c2;
-    byte field_0x1c3;
-    byte field_0x1c4;
+    byte Ox1bf;
+    byte Ox1c0;
+    byte Ox1c1;
+    byte Ox1c2;
+    byte Ox1c3;
+    byte Ox1c4;
 
 } GolfBall;
 
