@@ -11,6 +11,10 @@ extern "C" {
 /*         GAME         */
 
 
+void FormatRepositoryClear();
+void FormatRepositoryPutInt(int tag, int x);
+
+
 typedef enum {
     TB_FREE,
     TB_SPAWN,
@@ -59,9 +63,6 @@ extern TextBlock TextBlocks[60]; // 802cc050
 
 
 
-void FormatRepositoryClear();
-void FormatRepositoryPutInt(int tag, int x);
-
 
 TextBlock* TextBlockCreate(int, int, int, int, int, int);
 void TextBlockConfigure(TextBlock*, int strid, int x, int y, int);
@@ -72,7 +73,7 @@ void TextBlockStateMachine(void);
 
 
 /*         OURS         */
-void TextManager(void);
+extern "C" void TextManager(void);
 
 
 #ifdef __cplusplus

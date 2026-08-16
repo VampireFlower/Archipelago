@@ -70,7 +70,7 @@ args = [patch/sys.platform/'gcc',
 
 if cpp:
     args.extend([file for file in (patch/'cpp').rglob("*")])
-    args.extend(("-fno-rtti", "-fno-exceptions", '-Wno-complain-wrong-lang'))
+    args.extend(("-fno-rtti", "-fno-exceptions", '-Wno-complain-wrong-lang', '-Wl,--no-demangle'))
 
 if subprocess.run(args, cwd=build).returncode != 0:
     raise Exception("Compilation failed!")

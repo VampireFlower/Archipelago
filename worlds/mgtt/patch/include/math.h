@@ -3,7 +3,10 @@
 #ifndef MGTT_MATH_H
 #define MGTT_MATH_H
 
+
 #define PI 3.1415927f
+#define DegToRad(a)   ( (a) * 0.01745329252f )
+#define RadToDeg(a)   ( (a) * 57.29577951f )
 
 
 float hypotf(float, float);
