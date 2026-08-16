@@ -4,7 +4,9 @@
 #ifndef MGTT_TEXT_H
 #define MGTT_TEXT_H
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*         GAME         */
 
@@ -64,12 +66,17 @@ void FormatRepositoryPutInt(int tag, int x);
 TextBlock* TextBlockCreate(int, int, int, int, int, int);
 void TextBlockConfigure(TextBlock*, int strid, int x, int y, int);
 void TextBlockDelete(TextBlock*);
-void TextBlockDrawGlyphs(int subsystem, Mtx, int color, int);
+void TextBlockDrawGlyphs(struct TextBlockRenderState *, Mtx, int color, int);
 void TextBlockStateMachine(void);
 
 
 
 /*         OURS         */
 void TextManager(void);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

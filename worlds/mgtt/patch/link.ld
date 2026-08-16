@@ -78,13 +78,15 @@ hypotf  = 0x80019da4;
 hypot3f = 0x80019de8;
 atan2f  = 0x80019e30;
 
+SetCurrentArena = 0x8001a5c4;
+
 malloc_from = 0x8001a628;
 malloc      = 0x8001a670;
 free        = 0x8001a85c;
 
-GetHeapID      = 0x8001a8c8;
-GetRandomInt   = 0x8001a8f0;
-GetRandomFloat = 0x8001aa54;
+GetCurrentArena = 0x8001a8c8;
+GetRandomInt    = 0x8001a8f0;
+GetRandomFloat  = 0x8001aa54;
 
 
 OSReport    = 0x8001d20c;

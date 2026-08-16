@@ -32,7 +32,7 @@ void TextDraw(TextBlock* block) {
     GXSetNumChans(0);
     GXSetTexCoordGen2(0,1,4,60);
     
-    TextBlockDrawGlyphs(*((int*)block + 0x95), identity, 0xffffffff, 1);
+    TextBlockDrawGlyphs(block->tbrs, identity, 0xffffffff, 1);
 
     // if it isnt deleted, the game automatically picks up on the tb and draws it?!
     // means we can't use effects like typewriter. investigate later
@@ -46,19 +46,12 @@ void TextManager(void)
     
     char input = *(char*)0x8026bb60;
 
-    auto x = ({
-        int y;
-        if (input) y = 1;
-        else y = 0;
-        y;
-    });
-
     if (input) { 
         if (!mytext){
             mytext = TextBlockCreate(368,192,320,192,1,20);
             TextBlockConfigure(mytext, 0, 8, 28, 1);
         }
-        add_to_render_queue(11.0, TextDraw, (int)mytext, 20);
+        add_to_render_queue(11.0, (void*)TextDraw, (int)mytext, 20);
     } else if (mytext) {
         TextBlockDelete(mytext);
         mytext = 0;

@@ -1,24 +1,26 @@
-// powerpc-eabi-gcc -Os -mcpu=750 -mbig-endian -ffreestanding -nostdlib -fno-pic -mno-sdata -G 0 -c main.c -o file.o
-
 #include <types.h>
 #include <mtx.h>
 
 #ifndef MGTT_H
 #define MGTT_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 
 
 
-
-void* malloc(int);
+void* malloc(uint);
 void* malloc_from(int heap, int);
-void* memcpy(void* dst, void* src, uint size);
+void* memcpy(void* dst, const void* src, uint size);
 void  free(void*);
-int   GetHeapID(); // which heap the current thread uses
 
-int GetRandomInt(); // 31 bits, guaranteed >= 0
+int   SetCurrentArena(int);
+int   GetCurrentArena(int);
+
+int   GetRandomInt(); // 31 bits, guaranteed >= 0
 float GetRandomFloat(); // 0 to 1
 
 
@@ -68,5 +70,9 @@ extern int  FlyingCameraAngle;     // 8050f128
 extern BOOL TRY_BEHIND_CUP_CAMERA; // 8050f14c
 extern BOOL TRY_ACTION_CUP_CAMERA; // 8050f150
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

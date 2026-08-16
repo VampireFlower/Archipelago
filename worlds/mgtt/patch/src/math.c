@@ -1,6 +1,3 @@
-#include <types.h>
-
-
 float sqrtf(float x)
 {
     float y;

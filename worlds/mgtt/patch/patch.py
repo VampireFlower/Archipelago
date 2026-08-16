@@ -64,10 +64,12 @@ args = [patch/sys.platform/'gcc',
         '-B', patch/sys.platform, # tell gcc where to find executables it depends on
         '-fno-asynchronous-unwind-tables', # omit section .eh_frame
         '-fno-use-linker-plugin',
+        '-Wall', '-Wa,-W',
         '-S' if DEBUG_ASM else '-oblob.elf'
         ] + source_files
 
-if cpp: 
+if cpp:
+    args.extend([file for file in (patch/'cpp').rglob("*")])
     args.extend(("-fno-rtti", "-fno-exceptions", '-Wno-complain-wrong-lang'))
 
 if subprocess.run(args, cwd=build).returncode != 0:
@@ -118,8 +120,13 @@ for line in nm.stdout.splitlines():
 pad = max(len(symbol) + 1 for symbol in symbols)
 with open(build/"symbols.txt", "w") as f:
     for symbol, address in symbols.items():
+
+        demangled = subprocess.run(
+            [patch/sys.platform/'c++filt', symbol], capture_output=True, text=True
+        ).stdout.replace('\n', '') if cpp and symbol.startswith("_Z") else ""
+
         symbol = (symbol+":").ljust(pad)
-        f.write(f"{symbol} {address:08x}\n")
+        f.write(f"{symbol} {address:08x} {demangled}\n")
 
 for hook in hooks:
     # if the target is a symbol name, use the address of that symbol name
