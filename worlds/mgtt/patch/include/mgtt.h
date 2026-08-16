@@ -4,9 +4,7 @@
 #ifndef MGTT_H
 #define MGTT_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+
 
 
 
@@ -71,8 +69,5 @@ extern BOOL TRY_BEHIND_CUP_CAMERA; // 8050f14c
 extern BOOL TRY_ACTION_CUP_CAMERA; // 8050f150
 
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif

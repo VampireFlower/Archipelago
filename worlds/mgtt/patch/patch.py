@@ -64,7 +64,8 @@ args = [patch/sys.platform/'gcc',
         '-B', patch/sys.platform, # tell gcc where to find executables it depends on
         '-fno-asynchronous-unwind-tables', # omit section .eh_frame
         '-fno-use-linker-plugin',
-        '-Wall', '-Wa,-W',
+        '-Wall',  # enable all warnings
+        '-Wa,-W', # make assembler shut up
         '-S' if DEBUG_ASM else '-oblob.elf'
         ] + source_files
 

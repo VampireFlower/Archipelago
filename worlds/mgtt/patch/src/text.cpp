@@ -1,8 +1,9 @@
-#include <gx.h>
-#include <mgtt.h>
-#include <mtx.h>
-#include <text.h>
-
+extern "C" {
+    #include <gx.h>
+    #include <mgtt.h>
+    #include <mtx.h>
+    #include <text.h>
+}
 
 int bar = 5;
 
@@ -51,9 +52,12 @@ void TextManager(void)
             mytext = TextBlockCreate(368,192,320,192,1,20);
             TextBlockConfigure(mytext, 0, 8, 28, 1);
         }
-        add_to_render_queue(11.0, (void*)TextDraw, (int)mytext, 20);
+        if (mytext->state != TB_FREE) // deleted when exiting gameplay
+            add_to_render_queue(11.0, (void*)TextDraw, (int)mytext, 20);
+        else
+            mytext = nullptr;
     } else if (mytext) {
         TextBlockDelete(mytext);
-        mytext = 0;
+        mytext = nullptr;
     }
 }

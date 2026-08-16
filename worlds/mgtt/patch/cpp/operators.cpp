@@ -1,6 +1,8 @@
 
-#include <types.h>
-#include <mgtt.h>
+extern "C" {
+    #include <types.h>
+    #include <mgtt.h>
+}
 
 void * operator new(uint size) {
     int tmp = SetCurrentArena(0);

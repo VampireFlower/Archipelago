@@ -4,9 +4,7 @@
 #ifndef MGTT_GX_H
 #define MGTT_GX_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+
 
 
 void GXSetTexCoordGen2(int,int,int,int);
@@ -21,8 +19,6 @@ void GXSetZMode(int, int, int);
 void GXSetProjection(Mtx44, int type);
 void GXLoadPosMtxImm(Mtx, int);
 
-#ifdef __cplusplus
-}
-#endif
+
 
 #endif

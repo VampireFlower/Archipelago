@@ -4,9 +4,6 @@
 #ifndef MGTT_TEXT_H
 #define MGTT_TEXT_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /*         GAME         */
 
@@ -15,7 +12,7 @@ void FormatRepositoryClear();
 void FormatRepositoryPutInt(int tag, int x);
 
 
-typedef enum {
+typedef enum : byte {
     TB_FREE,
     TB_SPAWN,
     TB_unk1,
@@ -76,8 +73,5 @@ void TextBlockStateMachine(void);
 extern "C" void TextManager(void);
 
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif

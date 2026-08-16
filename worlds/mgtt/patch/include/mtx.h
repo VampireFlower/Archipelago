@@ -3,9 +3,6 @@
 #ifndef MGTT_MTX_H
 #define MGTT_MTX_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 
 
@@ -61,8 +58,5 @@ float PSVECDistance       ( Vec3f* a, Vec3f* b );
 #define VECDistance             PSVECDistance
 
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif // MGTT_MTX_H
