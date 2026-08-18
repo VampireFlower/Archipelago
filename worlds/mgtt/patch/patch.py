@@ -4,6 +4,7 @@ import struct
 import subprocess
 import sys
 from pathlib import Path
+from hooks import hooks
 
 GECKO = False
 DEBUG_ASM = False
@@ -31,13 +32,6 @@ clv_bytes = mgtt.decompress(clv.read_bytes())[0]
 buc_bytes = mgtt.decompress(buc.read_bytes())[0]
 
 
-from hooks import hooks
-# add symbol names for hook locations
-with open(build/"hook_symbols.ld", "w") as f:
-    for hook in hooks:
-        f.write(f"{hook['name']} = {hook['origin']:#x};\n")
-
-
 source_files = [file for file in src.rglob("*") if file.suffix in (".S", ".s", ".c", ".cpp")]
 
 cpp = any(".cpp" in file.name for file in source_files)
@@ -48,8 +42,13 @@ if cpp:
         "file": "dol",
       "origin": 0x8000326c,
       "target": '__init_cpp',
-        'type': "bl"
+        'type': "b"
     })
+
+# add symbol names for hook locations
+with open(build/"hook_symbols.ld", "w") as f:
+    for hook in hooks:
+        f.write(f"{hook['name']} = {hook['origin']:#x};\n")
 
 args = [patch/sys.platform/'gcc',
         '-O1',        # basic optimization
@@ -67,7 +66,7 @@ args = [patch/sys.platform/'gcc',
         '-S' if DEBUG_ASM else '-oblob.elf'
         ] + source_files
 
-if OPTIMIZE:
+if OPTIMIZE and not DEBUG_ASM:
     args[1] = '-Oz'
     args.extend([
         '-flto', # link time optimization
@@ -118,8 +117,8 @@ if nm.returncode != 0:
     print(nm.stderr)
     raise Exception("Getting symbol information failed!")
 
-# nm.stdout:
-# 8001a670 T MyFunction
+# nm.sdout:                symbols:
+# 8001a670 T MyFunction -> {'MyFunction': 2147591792, 'T'}
 
 symbols = {}
 for line in nm.stdout.splitlines():
