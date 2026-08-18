@@ -15,6 +15,8 @@ void* malloc_from(int heap, int);
 void* memcpy(void* dst, const void* src, uint size);
 void  free(void*);
 
+void  PlaySoundEffect(short id, byte volume);
+
 int   SetCurrentArena(int);
 int   GetCurrentArena(int);
 

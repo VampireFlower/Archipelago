@@ -5,10 +5,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-
+GECKO = True
 DEBUG_ASM = False
-GECKO     = False
-
+KEEP_UNUSED = False
 
 patch = Path(__file__).parent
 
@@ -69,6 +68,17 @@ args = [patch/sys.platform/'gcc',
         '-S' if DEBUG_ASM else '-oblob.elf'
         ] + source_files
 
+if not KEEP_UNUSED:
+    args.extend([
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-Wl,--gc-sections"
+        ])
+
+    for hook in hooks:
+        if type(hook['target']) is str:
+            args.append(f"-Wl,--undefined={hook['target']}")
+
 if cpp:
     args.extend([file for file in (patch/'cpp').rglob("*")])
     args.extend(("-fno-rtti", "-fno-exceptions", '-Wno-complain-wrong-lang', '-Wl,--no-demangle'))
@@ -86,7 +96,7 @@ if DEBUG_ASM:
 args = [patch/sys.platform/'objcopy',
         '-O', 'binary', # output type
         'blob.elf',     # input
-        'dump.bin'      # output
+        'blob.bin'      # output
         ]
 
 if subprocess.run(args, cwd=build).returncode != 0:
@@ -173,21 +183,14 @@ if GECKO == False:
                 buc_bytes[trampoline:trampoline+4] = branch
 
 
-    dol.add_text((build/'dump.bin').read_bytes(), 0x805247c0)
+    dol.add_text((build/'blob.bin').read_bytes(), 0x805247c0)
     dol.save()
     clv.write_bytes(mgtt.compress(clv_bytes))
     buc.write_bytes(mgtt.compress(buc_bytes))
 
 else:
 
-    gecko = ""
-
-    # add hooks to gecko code
-    for hook in hooks:
-
-        branch = make_hook_branch(hook)
-
-        gecko += '04' + f'{hook["origin"]:08x}'[2:] + f' {branch.hex()}\n'
+    hooks04 = ''.join('04' + f'{hook["origin"]:08x}'[2:] + f' {make_hook_branch(hook).hex()}\n' for hook in hooks)
 
 
     source= f'''
@@ -198,7 +201,7 @@ else:
     foo:
     mflr r4
     addi r4,r4,32
-    li r5,{(build/'dump.bin').stat().st_size}
+    li r5,{(build/'blob.bin').stat().st_size}
 
     lis r0,   0x8007
     ori r0,r0,0x27f8 # memcpy
@@ -207,7 +210,7 @@ else:
     blrl
     b ret
 
-    .incbin "dump.bin"
+    .incbin "blob.bin"
 
     ret:
     '''
@@ -226,7 +229,8 @@ else:
     if subprocess.run(args, cwd=build).returncode != 0:
         raise Exception("Extracting gecko code failed!")
 
-    bin = bytearray((build/'gecko_bootstrap.bin').read_bytes())
+    bin = bytearray((build/'gecko_bootstrap.bin').stat().st_size)
+    open(build/'gecko_bootstrap.bin', 'rb').readinto(bin)
 
     # code must end with 0x00000000
     bin.extend(b'\x60\x00\x00\x00\x00\x00\x00\x00') if len(bin) % 8 == 0 else bin.extend(b'\x00\x00\x00\x00')
@@ -236,11 +240,9 @@ else:
         for word1, word2 in struct.iter_unpack(">II", bin)
     )
 
-    c2_line_count = f"{payload.count('\n')+1:08x}"
+    gecko = f"C2003268 {len(bin)//8:08x}\n" + payload
 
-    gecko += (f"C2003268 {c2_line_count}\n" + payload)
-
-    (build/'gecko.txt').write_text(gecko)
+    (build/'gecko.txt').write_text(hooks04+gecko)
 
 
 

@@ -20,8 +20,8 @@ SECTIONS
 
     .ctors : ALIGN(4)
     {
-        *(.ctors)
-        *(.ctors.*)
+        KEEP(*(.ctors))
+        KEEP(*(.ctors.*))
         LONG(0)
     } > freespace
 
@@ -31,8 +31,8 @@ SECTIONS
 
     .dtors : ALIGN(4)
     {
-        *(.dtors)
-        *(.dtors.*)
+        KEEP(*(.dtors))
+        KEEP(*(.dtors.*))
         LONG(0)
     } > freespace
 
@@ -71,6 +71,8 @@ recording = .;
 
 /* FUNCTIONS */
 
+
+PlaySoundEffect = 0x80011b88;
 
 cosf   = 0x80009618;
 
