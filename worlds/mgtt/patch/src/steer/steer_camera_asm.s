@@ -19,7 +19,7 @@ mullw r9,r9,r3
 # if seekingcamera returns true: r9 * 0 = 0
 # if seekingcamera returns false r9 * 1 = r9
 
-ret:
+
 b BallFlightCameraUpdate_asm_hook + 4
 
 
