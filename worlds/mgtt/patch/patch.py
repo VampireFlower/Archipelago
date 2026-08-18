@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-GECKO = True
+GECKO = False
 DEBUG_ASM = False
 KEEP_UNUSED = False
 
@@ -201,7 +201,7 @@ else:
     foo:
     mflr r4
     addi r4,r4,32
-    li r5,{(build/'blob.bin').stat().st_size}
+    li r5,{(build/'blob.bin').size}
 
     lis r0,   0x8007
     ori r0,r0,0x27f8 # memcpy
@@ -229,7 +229,7 @@ else:
     if subprocess.run(args, cwd=build).returncode != 0:
         raise Exception("Extracting gecko code failed!")
 
-    bin = bytearray((build/'gecko_bootstrap.bin').stat().st_size)
+    bin = bytearray((build/'gecko_bootstrap.bin').size)
     open(build/'gecko_bootstrap.bin', 'rb').readinto(bin)
 
     # code must end with 0x00000000 and be a multiple of 8 bytes
@@ -247,3 +247,4 @@ else:
 
 
 print("\nBuild complete. Wahoo!")
+print((build/'blob.bin').size, "bytes")
