@@ -7,7 +7,7 @@ from pathlib import Path
 
 GECKO = False
 DEBUG_ASM = False
-KEEP_UNUSED = False
+OPTIMIZE = True
 
 patch = Path(__file__).parent
 
@@ -52,32 +52,34 @@ if cpp:
     })
 
 args = [patch/sys.platform/'gcc',
-        '-Os',        # optimize for size
+        '-O1',        # basic optimization
+        '-Wall',      # enable all warnings
+        '-Wa,-W',     # make assembler shut up
         '-fno-pic',   # generate code that expects to load at a fixed address
         '-nostdlib',  # do not pull in the C runtime
         '-mregnames', # allow usage of register names in assembly source
         '-mno-sdata', # SDA is already taken
+        '-I', patch/'include',
         '-T', patch/'link.ld',
         '-T', patch/'intrinsics.ld',
-        '-I', patch/'include',
         '-B', patch/sys.platform, # tell gcc where to find executables it depends on
         '-fno-asynchronous-unwind-tables', # omit section .eh_frame
-        '-fno-use-linker-plugin',
-        '-Wall',  # enable all warnings
-        '-Wa,-W', # make assembler shut up
         '-S' if DEBUG_ASM else '-oblob.elf'
         ] + source_files
 
-if not KEEP_UNUSED:
+if OPTIMIZE:
+    args[1] = '-Oz'
     args.extend([
+        '-flto', # link time optimization
         "-ffunction-sections",
         "-fdata-sections",
-        "-Wl,--gc-sections"
-        ])
+        "-Wl,--gc-sections", # remove unreachable sections after lto pass
+    ])
 
-    for hook in hooks:
-        if type(hook['target']) is str:
-            args.append(f"-Wl,--undefined={hook['target']}")
+# tell the linker our program's entrypoints
+for hook in hooks:
+    if type(hook['target']) is str:
+        args.append(f"-Wl,--undefined={hook['target']}")
 
 if cpp:
     args.extend([file for file in (patch/'cpp').rglob("*")])
@@ -116,33 +118,67 @@ if nm.returncode != 0:
     print(nm.stderr)
     raise Exception("Getting symbol information failed!")
 
-# nm.sdout:                symbols:
-# 8001a670 T MyFunction -> {'MyFunction': 2147591792}
+# nm.stdout:
+# 8001a670 T MyFunction
+
 symbols = {}
 for line in nm.stdout.splitlines():
     address, kind, symbol = line.split()
 
-    if kind == 'A': continue # not novel information
-    if kind == 't': continue # ignore local labels
+    address = int(address, 16)
 
-    symbols[symbol] = int(address, 16)
+    # ignore game symbols
+    if address < 0x805247c0:
+        continue
+
+    symbols[symbol] = {
+        'address': address,
+        'kind': kind,
+    }
+
 
 # Dump symbols for debugging purposes
+kind_names = {
+    'T': 'TEXT',
+    'D': 'DATA',
+    'B': 'BSS',
+    'R': 'RODATA',
+}
+
 pad = max(len(symbol) + 1 for symbol in symbols)
+
 with open(build/"symbols.txt", "w") as f:
-    for symbol, address in symbols.items():
+    for kind in ('T', 'D', 'B', 'R'):
+        entries = [
+            (symbol, info)
+            for symbol, info in symbols.items()
+            if info['kind'].upper() == kind
+        ]
 
-        demangled = subprocess.run(
-            [patch/sys.platform/'c++filt', symbol], capture_output=True, text=True
-        ).stdout.replace('\n', '') if cpp and symbol.startswith("_Z") else ""
+        if not entries:
+            continue
 
-        symbol = (symbol+":").ljust(pad)
-        f.write(f"{symbol} {address:08x} {demangled}\n")
+        f.write(f"\n[{kind_names[kind]}]\n")
 
+        for symbol, info in entries:
+            demangled = (
+                ' ' + subprocess.run(
+                    [patch/sys.platform/'c++filt', symbol],
+                    capture_output=True,
+                    text=True,
+                ).stdout.rstrip()
+                if cpp and symbol.startswith("_Z")
+                else ""
+            )
+
+            name = (symbol + ":").ljust(pad)
+            f.write(f"{name} {info['address']:08x}{demangled}\n")
+
+
+# Hooks still want just the address.
 for hook in hooks:
-    # if the target is a symbol name, use the address of that symbol name
     if type(hook["target"]) is str:
-        hook["target"] = symbols[hook["target"]]
+        hook["target"] = symbols[hook["target"]]['address']
 
 
 

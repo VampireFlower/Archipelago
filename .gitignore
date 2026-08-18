@@ -76,7 +76,6 @@ __pycache__/
 
 # C extensions
 *.so
-*.dll
 
 # Distribution / packaging
 .Python

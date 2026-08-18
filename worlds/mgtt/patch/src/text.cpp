@@ -5,7 +5,7 @@ extern "C" {
     #include <text.h>
 }
 
-int bar = 5;
+int bar = 8;
 
 TextBlock* mytext;
 
