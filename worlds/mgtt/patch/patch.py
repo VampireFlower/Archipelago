@@ -67,7 +67,7 @@ args = [patch/sys.platform/'gcc',
         ] + source_files
 
 if OPTIMIZE and not DEBUG_ASM:
-    args[1] = '-Oz'
+    args[args.index('-O1')] = '-Oz'
     args.extend([
         '-flto', # link time optimization
         "-ffunction-sections",
