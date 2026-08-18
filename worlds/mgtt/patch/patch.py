@@ -232,7 +232,7 @@ else:
     bin = bytearray((build/'gecko_bootstrap.bin').stat().st_size)
     open(build/'gecko_bootstrap.bin', 'rb').readinto(bin)
 
-    # code must end with 0x00000000
+    # code must end with 0x00000000 and be a multiple of 8 bytes
     bin.extend(b'\x60\x00\x00\x00\x00\x00\x00\x00') if len(bin) % 8 == 0 else bin.extend(b'\x00\x00\x00\x00')
 
     payload = "\n".join(
