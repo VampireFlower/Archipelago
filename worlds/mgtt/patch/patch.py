@@ -282,4 +282,6 @@ else:
 
 
 print("\nBuild complete. Wahoo!")
-print((build/'blob.bin').size, "bytes")
+size=(build/'blob.bin').size
+print(size, "bytes")
+print(f"{size/0x2b840*100:.2f}% of the budget used")
