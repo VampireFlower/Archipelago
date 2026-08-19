@@ -74,7 +74,7 @@ if OPTIMIZE and not DEBUG_ASM:
         "-fdata-sections",
         "-Wl,--gc-sections", # remove unreachable sections after lto pass
     ])
-
+args.append('-Wfatal-errors')
 # tell the linker our program's entrypoints
 for hook in hooks:
     if type(hook['target']) is str:

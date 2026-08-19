@@ -1,7 +1,7 @@
 extern "C" {
-    #include <text.h>
     #include <mgtt.h>
 }
+#include <text.hpp>
 
 class Hello {
     public:

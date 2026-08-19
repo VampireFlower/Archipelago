@@ -8,6 +8,7 @@
 /*         GAME         */
 
 
+
 void FormatRepositoryClear();
 void FormatRepositoryPutInt(int tag, int x);
 
@@ -26,7 +27,7 @@ typedef enum : byte {
     TB_WRITE_ALL
 } TBState;
 
-typedef struct TextBlock {
+struct TextBlock {
     char buffer[512];
    char* cursor;
     struct {
@@ -54,18 +55,20 @@ typedef struct TextBlock {
     byte pen_b;
     byte cheesy_effects;
    float scale;
-} TextBlock;
+
+    static TextBlock* Create(int x, int y);
+};
 
 extern TextBlock TextBlocks[60]; // 802cc050
 
-
-
-
-TextBlock* TextBlockCreate(int, int, int, int, int, int);
+extern "C"{
+TextBlock* TextBlockCreate(int x, int y, int bubble_width, int bubble_height, int unk, int layer);
 void TextBlockConfigure(TextBlock*, int strid, int x, int y, int);
 void TextBlockDelete(TextBlock*);
 void TextBlockDrawGlyphs(struct TextBlockRenderState *, Mtx, int color, int);
 void TextBlockStateMachine(void);
+void set_pen_color(TextBlock*, int idx);
+}
 
 
 

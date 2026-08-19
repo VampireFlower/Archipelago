@@ -2,15 +2,23 @@ extern "C" {
     #include <gx.h>
     #include <mgtt.h>
     #include <mtx.h>
-    #include <text.h>
 }
+
+#include <text.hpp>
 
 int bar = 8;
 
+TextBlock* TextBlock::Create(int x, int y) {
+    return TextBlockCreate(x,y,x+10,y+10,1,20);
+}
+
 TextBlock* mytext;
 
-// code based on DrawShotEndText
+// based on DrawShotEndText
 void TextDraw(TextBlock* block) {
+
+    if (block->state == TB_FREE)
+        return;
 
     Mtx44 projection;
     Mtx identity;
@@ -35,11 +43,6 @@ void TextDraw(TextBlock* block) {
     
     TextBlockDrawGlyphs(block->tbrs, identity, 0xffffffff, 1);
 
-    // if it isnt deleted, the game automatically picks up on the tb and draws it?!
-    // means we can't use effects like typewriter. investigate later
-    // TextBlockDelete(block);
-    // mytext = 0;
-
 }
 
 void TextManager(void)
@@ -49,7 +52,7 @@ void TextManager(void)
 
     if (input) { 
         if (!mytext){
-            mytext = TextBlockCreate(368,192,320,192,1,20);
+            mytext = TextBlock::Create(368,192);
             TextBlockConfigure(mytext, 0, 8, 28, 1);
         }
         if (mytext->state != TB_FREE) // deleted when exiting gameplay
