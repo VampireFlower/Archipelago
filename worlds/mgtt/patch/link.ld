@@ -91,6 +91,8 @@ GetRandomInt    = 0x8001a8f0;
 GetRandomFloat  = 0x8001aa54;
 
 
+sprintf = 0x8001c480;
+
 OSReport    = 0x8001d20c;
 add_to_render_queue = 0x8001e924;
 ProjectOnScreen = 0x8001ebac;

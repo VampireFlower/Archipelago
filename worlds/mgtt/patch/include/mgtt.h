@@ -23,6 +23,8 @@ int   GetCurrentArena(int);
 int   GetRandomInt(); // 31 bits, guaranteed >= 0
 float GetRandomFloat(); // 0 to 1
 
+int sprintf(char* dst, char* fmt, ...);
+
 
 void add_to_render_queue(float depth, void* drawer, int arg, int priority);
 

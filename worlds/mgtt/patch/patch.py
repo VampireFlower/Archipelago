@@ -18,7 +18,7 @@ src   = patch/'src'
 
 if build.exists():
     shutil.rmtree(build)
-    if not DEBUG_ASM:
+    if not DEBUG_ASM and not GECKO:
         subprocess.run(['git', '-C', mgtt.REPO_ROOT, 'restore', 'discs'])
 
 build.mkdir()
