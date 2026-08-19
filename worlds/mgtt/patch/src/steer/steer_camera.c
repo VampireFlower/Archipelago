@@ -16,8 +16,6 @@ extern bool ResolveCameraCollision(
 #define HOLD_FRAMES                   15u
 #define CATCHUP_FRAMES                40u
 
-#define FOV_KICK                      -1.5f
-
 #define CAMERA_SWEEP_RADIUS           0.48f
 #define CAMERA_GROUND_CLEARANCE       3.0f
 
@@ -57,16 +55,6 @@ extern bool ResolveCameraCollision(
 
 #define IMPACT_DAMP_FRAMES            10u
 
-#define MIN_LOOK_DISTANCE             1.00f
-
-/*
- * Prevents the camera's forward direction from approaching the world-up
- * vector too closely.
- *
- * tan(70 degrees) is approximately 2.75.
- */
-#define MAX_FORWARD_VERTICAL_RATIO    2.75f
-
 
 typedef struct {
     bool initialized;
@@ -92,7 +80,6 @@ typedef struct {
     float heldLookDistance;
     float orbitDistance;
     float orbitHeight;
-    float baseFov;
     float descentLookDown;
 } BallCameraState;
 
@@ -163,59 +150,6 @@ static void DirectionNlerp(
         (adjustedTo.z - from->z) * amount;
 
     VECNormalize(&blended, result);
-}
-
-
-/*
- * Keeps the forward direction from becoming nearly parallel to world-up.
- *
- * A conventional look-at matrix computes its right vector from:
- *
- *     right = forward x worldUp
- *
- * That cross product becomes unstable when forward is almost vertical.
- */
-static void LimitForwardPitch(Vec3f* forward)
-{
-    float horizontalLength;
-    float maximumVertical;
-    float length;
-
-    horizontalLength = hypotf(
-        forward->x,
-        forward->z
-    );
-
-    /*
-     * Supply a horizontal component if the direction has become completely
-     * vertical.
-     */
-    if (horizontalLength < 0.001f) {
-        forward->z = -0.001f;
-
-        horizontalLength = hypotf(
-            forward->x,
-            forward->z
-        );
-    }
-
-    maximumVertical =
-        horizontalLength *
-        MAX_FORWARD_VERTICAL_RATIO;
-
-    forward->y = clampf(
-        forward->y,
-        -maximumVertical,
-        maximumVertical
-    );
-
-    length = VECMag(forward);
-
-    if (length > 0.001f) {
-        forward->x /= length;
-        forward->y /= length;
-        forward->z /= length;
-    }
 }
 
 
@@ -295,30 +229,6 @@ static float CatchupEase(float time)
 }
 
 
-/*
- * Smooth FOV pulse which peaks early in the catch-up.
- */
-static float CatchupFovPulse(float time)
-{
-    float remaining;
-    float warpedTime;
-    float warpedRemaining;
-
-    time = clampf(time, 0.0f, 1.0f);
-
-    remaining = 1.0f - time;
-    warpedTime = 1.0f - remaining * remaining;
-    warpedRemaining = 1.0f - warpedTime;
-
-    return
-        16.0f *
-        warpedTime *
-        warpedTime *
-        warpedRemaining *
-        warpedRemaining;
-}
-
-
 static void InitializeBallCamera(
     BallCameraState* state,
     GolfBall* ball,
@@ -346,26 +256,15 @@ static void InitializeBallCamera(
     state->currentEye = camera.eye;
     state->currentTarget = camera.target;
 
-    state->baseFov = camera.fov;
 
     VECSubtract(&state->heldTarget, &state->heldEye, &heldView);
 
     state->heldLookDistance = VECMag(&heldView);
 
-    if (state->heldLookDistance < MIN_LOOK_DISTANCE) {
-        state->heldLookDistance = MIN_LOOK_DISTANCE;
 
-        state->heldForward.x = 0.0f;
-        state->heldForward.y = 0.0f;
-        state->heldForward.z = -1.0f;
-    }
-    else {
-        state->heldForward.x = heldView.x / state->heldLookDistance;
-        state->heldForward.y = heldView.y / state->heldLookDistance;
-        state->heldForward.z = heldView.z / state->heldLookDistance;
-    }
-
-    LimitForwardPitch(&state->heldForward);
+    state->heldForward.x = heldView.x / state->heldLookDistance;
+    state->heldForward.y = heldView.y / state->heldLookDistance;
+    state->heldForward.z = heldView.z / state->heldLookDistance;
 
     horizontalOffset.x = camera.eye.x - ball->restingState.position.x;
 
@@ -375,22 +274,11 @@ static void InitializeBallCamera(
 
     horizontalDistance = VECMag(&horizontalOffset);
 
-    if (horizontalDistance > 0.001f) {
-        state->orbitDistance = horizontalDistance;
+    state->orbitDistance = horizontalDistance;
 
-        state->backDirection.x = horizontalOffset.x / horizontalDistance;
-
-        state->backDirection.y = 0.0f;
-
-        state->backDirection.z = horizontalOffset.z / horizontalDistance;
-    }
-    else {
-        state->orbitDistance = DEFAULT_ORBIT_DISTANCE;
-
-        state->backDirection.x = 0.0f;
-        state->backDirection.y = 0.0f;
-        state->backDirection.z = 1.0f;
-    }
+    state->backDirection.x = horizontalOffset.x / horizontalDistance;
+    state->backDirection.y = 0.0f;
+    state->backDirection.z = horizontalOffset.z / horizontalDistance;
 
     state->orbitHeight = camera.eye.y - ball->restingState.position.y;
 }
@@ -607,16 +495,12 @@ static void BuildCatchupPose(
 
     VECNormalize(&wantedView, &wantedForward);
 
-    LimitForwardPitch(&wantedForward);
-
     DirectionNlerp(
         &state->heldForward,
         &wantedForward,
         amount,
         &transitionForward
     );
-
-    LimitForwardPitch(&transitionForward);
 
     transitionLookDistance =
         state->heldLookDistance +
@@ -625,10 +509,6 @@ static void BuildCatchupPose(
             state->heldLookDistance
         ) * amount;
 
-    if (transitionLookDistance < MIN_LOOK_DISTANCE) {
-        transitionLookDistance =
-            MIN_LOOK_DISTANCE;
-    }
 
     transitionTarget->x =
         transitionEye->x +
@@ -668,7 +548,6 @@ bool SeekingCamera(GolfBall* ball)
 
     float catchupTime;
     float catchupAmount;
-    float fovPulse;
 
     state = &sCameraState;
     flyingState = &ball->flyingState;
@@ -742,8 +621,6 @@ bool SeekingCamera(GolfBall* ball)
 
         camera.target = state->currentTarget;
 
-        camera.fov = state->baseFov;
-
         if (newCameraFrame && state->impactDampFrames > 0) {
             --state->impactDampFrames;
         }
@@ -812,9 +689,6 @@ bool SeekingCamera(GolfBall* ball)
                 : CATCHUP_MAX_VERTICAL_STEP
         );
 
-        fovPulse = CatchupFovPulse(catchupTime);
-
-        camera.fov = state->baseFov + FOV_KICK * fovPulse;
     }
     else {
         if (impactDamping) {
@@ -856,7 +730,6 @@ bool SeekingCamera(GolfBall* ball)
             );
         }
 
-        camera.fov += (state->baseFov - camera.fov) * 0.25f;
     }
 
 
