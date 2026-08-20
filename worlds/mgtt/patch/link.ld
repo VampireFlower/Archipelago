@@ -23,7 +23,7 @@ MEMORY /* list of known available freespace */
 
 recording = ORIGIN(xfb);
 
-REGION_ALIAS("freespace", heap)
+REGION_ALIAS("freespace", ram)
 
 SECTIONS
 {

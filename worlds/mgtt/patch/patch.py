@@ -218,7 +218,7 @@ if GECKO == False:
                 buc_bytes[trampoline:trampoline+4] = branch
 
 
-    dol.add_text((build/'blob.bin').read_bytes(), 0x816a00a0)
+    dol.add_text((build/'blob.bin').read_bytes(), 0x805247c0)
     dol.save()
     clv.write_bytes(mgtt.compress(clv_bytes))
     buc.write_bytes(mgtt.compress(buc_bytes))
@@ -229,8 +229,8 @@ else:
 
 
     source= f'''
-    lis r3,   0x816a
-    ori r3,r3,0x00a0 # freespace
+    lis r3,   0x8052
+    ori r3,r3,0x47c0 # freespace
 
     bl foo
     foo:
@@ -284,4 +284,4 @@ else:
 print("\nBuild complete. Wahoo!")
 size=(build/'blob.bin').size
 print(size, "bytes")
-print(f"{size/0xaff60*100:.2f}% of the budget used")
+print(f"{size/0x2B840*100:.2f}% of the budget used")
