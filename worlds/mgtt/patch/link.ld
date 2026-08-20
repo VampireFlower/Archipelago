@@ -21,9 +21,9 @@ MEMORY /* list of known available freespace */
     heap (rwx) : ORIGIN = 0x816a00a0, LENGTH = 0xAFF60
 }
 
-REGION_ALIAS("freespace", ram)
 recording = ORIGIN(xfb);
 
+REGION_ALIAS("freespace", heap)
 
 SECTIONS
 {
