@@ -38,10 +38,10 @@ cpp = any(".cpp" in file.name for file in source_files)
 
 if cpp:
     hooks.append({
-        "name": "cpp_dynamic_initializers",
-        "file": "dol",
-      "origin": 0x8000326c,
-      "target": '__init_cpp',
+        'name': 'cpp_dynamic_initializers',
+        'file': 'dol',
+      'origin': 0x8000326c,
+      'target': '__init_cpp',
         'type': "b"
     })
 

@@ -3,14 +3,27 @@ INCLUDE hook_symbols.ld
 OUTPUT_FORMAT("elf32-powerpc")
 OUTPUT_ARCH(powerpc)
 
-MEMORY
+MEMORY /* list of known available freespace */
 {
-    eva (rwx) : ORIGIN = 0x800014C0, LENGTH = 0x240
-    xfb (rwx) : ORIGIN = 0x80127f60, LENGTH = 0xA020
-    ram (rwx) : ORIGIN = 0x805247c0, LENGTH = 0x2B840
+    
+    /* https://mariokartwii.com/showthread.php?tid=1106 */
+    eva  (rwx) : ORIGIN = 0x800014C0, LENGTH = 0x240
+    
+    /* the first XFB is 32 lines too long. 
+    it is 640*480 when the game is 640*448 */
+    xfb  (rwx) : ORIGIN = 0x80127f60, LENGTH = 0xA020
+    
+    /*the space between the end of BSS of the largest overlay and the XFB */
+    ram  (rwx) : ORIGIN = 0x805247c0, LENGTH = 0x2B840
+    
+    /* the game carves many arenas out of a large heap allocation.
+    there is space left over in the parent OS heap it uses */
+    heap (rwx) : ORIGIN = 0x816a00a0, LENGTH = 0xAFF60
 }
 
 REGION_ALIAS("freespace", ram)
+recording = ORIGIN(xfb);
+
 
 SECTIONS
 {
@@ -66,8 +79,6 @@ SECTIONS
 
 }
 
-recording = .;
-
 
 /* FUNCTIONS */
 
@@ -106,6 +117,8 @@ TextBlockConfigure    = 0x80024cfc;
 TextBlockCreate       = 0x80024e04;
 TextBlockDrawGlyphs   = 0x80027ecc;
 
+
+OSAllocFromHeap = 0x80032320;
 
 PSMTXIdentity  = 0x8003c354;
 PSMTXCopy      = 0x8003c3ec;
@@ -168,6 +181,11 @@ ResolveCameraCollision = 0x804557d4;
 camera = 0x8026c7c0;
 
 TextBlocks = 0x802cc050;
+
+
+__OSCurrHeap = 0x802d7b10;
+
+
 
 DrawShotEndText = 0x80431610;
 
