@@ -11,12 +11,11 @@ typedef enum BOOL : unsigned int {
     TRUE
 } BOOL;
 
-typedef unsigned char byte;
-typedef signed char sbyte;
-typedef unsigned int uint;
+typedef unsigned char  byte;
+typedef signed   char  sbyte;
+typedef unsigned int   uint;
 typedef unsigned short ushort;
-
-typedef unsigned int size_t;
+typedef unsigned int   size_t;
 
 
 typedef struct {

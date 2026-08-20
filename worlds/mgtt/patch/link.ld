@@ -82,7 +82,7 @@ SECTIONS
 
 /* FUNCTIONS */
 
-
+/* DOL */
 PlaySoundEffect = 0x80011b88;
 
 cosf   = 0x80009618;
@@ -175,11 +175,15 @@ tanf    = 0x80072828;
 acosf   = 0x80072940;
 asinf   = 0x80072a28;
 
+
+
+/* GOLF */
 CopyRestToFlying = 0x80414970;
 CopyFlyingToRest = 0x80414a1c;
 
-
 ResolveCameraCollision = 0x804557d4;
+
+
 
 
 /* DATA */
@@ -187,11 +191,10 @@ camera = 0x8026c7c0;
 
 TextBlocks = 0x802cc050;
 
-
 __OSCurrHeap = 0x802d7b10;
 
 
-
+/* GOLF */
 DrawShotEndText = 0x80431610;
 
 BallRestSimulated       = 0x80502768;
@@ -204,3 +207,8 @@ SecondaryCamera = 0x80505408;
 FlyingCameraAngle = 0x8050f128;
 TRY_BEHIND_CUP_CAMERA = 0x8050f14c;
 TRY_ACTION_CUP_CAMERA = 0x8050f150;
+
+
+/* MENU */
+MAIN_MENU_BUTTON_COUNT  = 0x80445db8;
+MAIN_MENU_BUTTON_LAYOUT = 0x8044c328;

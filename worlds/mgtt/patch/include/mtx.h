@@ -12,12 +12,12 @@ typedef float Mtx44[4][4];
 
 
 void C_MTXOrtho(
-    Mtx44 m, 
-    float top, 
-    float bottom, 
-    float left, 
-    float right, 
-    float near, 
+    Mtx44 m,
+    float top,
+    float bottom,
+    float left,
+    float right,
+    float near,
     float far
 );
 
@@ -31,6 +31,16 @@ uint PSMTXInvXpose  ( Mtx src, Mtx invX );
 
 void PSMTXMultVec   ( Mtx m, Vec3f* src, Vec3f* dst );
 void PSMTXMultVecSR ( Mtx m, Vec3f* src, Vec3f* dst );
+
+#define MTXIdentity           PSMTXIdentity  
+#define MTXCopy               PSMTXCopy      
+#define MTXConcat             PSMTXConcat    
+#define MTXTranspose          PSMTXTranspose 
+#define MTXInverse            PSMTXInverse   
+#define MTXInvXpose           PSMTXInvXpose  
+#define MTXMultVec            PSMTXMultVec   
+#define MTXMultVecSR          PSMTXMultVecSR 
+
 
 
 void  PSVECAdd            ( Vec3f* a, Vec3f* b, Vec3f* ab );

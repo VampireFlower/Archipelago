@@ -14,7 +14,7 @@ bool GetFlag(byte flag);
 
 
 void* malloc(uint);
-void* malloc_from(int heap, int);
+void* malloc_from(int arena, int);
 void* memcpy(void* dst, const void* src, uint size);
 void  free(void*);
 
