@@ -87,6 +87,11 @@ PlaySoundEffect = 0x80011b88;
 
 cosf   = 0x80009618;
 
+ClearFlag = 0x80018b28;
+SetFlag   = 0x80018b50;
+GetFlag   = 0x80018b78;
+
+
 hypotf  = 0x80019da4;
 hypot3f = 0x80019de8;
 atan2f  = 0x80019e30;

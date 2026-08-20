@@ -8,6 +8,9 @@
 
 
 
+void ClearFlag(byte flag);
+void SetFlag(byte flag);
+bool GetFlag(byte flag);
 
 
 void* malloc(uint);
