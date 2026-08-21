@@ -1,9 +1,9 @@
-extern "C" {
-    #include <gx.h>
-    #include <mgtt.h>
-    #include <mtx.h>
-    #include <text.h>
-}
+
+#include <gx.h>
+#include <mgtt.h>
+#include <mtx.h>
+#include <text.h>
+
 
 int bar = 8;
 
@@ -11,6 +11,9 @@ TextBlock* mytext;
 
 // code based on DrawShotEndText
 void TextDraw(TextBlock* block) {
+
+    if (block->state == TB_FREE)
+        return;
 
     Mtx44 projection;
     Mtx identity;

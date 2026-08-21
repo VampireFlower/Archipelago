@@ -70,7 +70,7 @@ void TextBlockStateMachine(void);
 
 
 /*         OURS         */
-extern "C" void TextManager(void);
+void TextManager(void);
 
 
 
