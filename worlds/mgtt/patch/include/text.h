@@ -11,6 +11,46 @@
 void FormatRepositoryClear();
 void FormatRepositoryPutInt(int tag, int x);
 
+typedef struct TBAnimationState {
+    Vec2s target;
+    Vec2f position_velocity;
+    short position_frames;
+    float target_scale;
+    float scale_velocity;
+    short scale_frames;
+    float target_roll;
+    float roll_velocity;
+    short roll_frames;
+    short padding;
+    short opacity_start;
+    short opacity_end;
+    short opacity_duration;
+    short opacity_elapsed;
+    bool alive;
+} TBAnimationState;
+
+typedef struct TextBlockRenderState {
+    struct Glyph* list; // points to LAST character first
+    byte Ox5;
+    bool alive;
+    byte layer;
+    byte opacity_start;
+   Vec3f position;
+   Vec3f Ox18;
+   float pitch;
+   float yaw;
+   float roll;
+  TBAnimationState * animState;
+   Vec2s bubbleDimensions;
+    byte Ox38;
+    byte Ox39;
+    byte Ox3a;
+    byte Ox3b[6];
+    byte bitfield;
+    bool manual_draw;
+    byte taunt;
+    byte Ox44;
+} TextBlockRenderState;
 
 typedef enum : byte {
     TB_FREE,
@@ -37,7 +77,7 @@ typedef struct TextBlock {
   struct TextBlockRenderState* tbrs;
    float Ox258;
    Vec2s position;
-   short Ox260;
+   short opacity_end;
    short Ox262;
    short Ox264;
    Vec2s pen_pos;

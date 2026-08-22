@@ -28,8 +28,7 @@ float GetRandomFloat(); // 0 to 1
 
 int sprintf(char* dst, const char* fmt, ...);
 
-
-void add_to_render_queue(float depth, void* drawer, int arg, int priority);
+void add_to_render_queue(void* drawer, int arg, int priority, float depth);
 
 
 typedef struct Camera {

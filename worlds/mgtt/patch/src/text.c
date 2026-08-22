@@ -56,7 +56,7 @@ void TextManager(void)
             TextBlockConfigure(mytext, 0, 8, 28, 1);
         }
         if (mytext->state != TB_FREE) // deleted when exiting gameplay
-            add_to_render_queue(11.0, (void*)TextDraw, (int)mytext, 20);
+            add_to_render_queue((void*)TextDraw, (int)mytext, 20, 11.0);
         else
             mytext = nullptr;
     } else if (mytext) {
