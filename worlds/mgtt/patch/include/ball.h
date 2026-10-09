@@ -1,9 +1,11 @@
 #include <types.h>
 #include <lies.h>
 
-#ifndef MGTT_BALL_H
-#define MGTT_BALL_H
+#pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef enum {
     SPIN_NONE,
@@ -23,8 +25,6 @@ typedef enum {
     SHOT_NORMAL = 1,
     SHOT_APPROACH = 2,
 } ShotType;
-
-
 
 
 
@@ -50,7 +50,7 @@ typedef enum : uint {
     BALL_MARKER,
     BALL_PIPE_LERP,
     BALL_PIPE_FLYING
-} BallMotion;
+} BallState;
 
 
 typedef struct BallFlyingState {
@@ -68,7 +68,7 @@ typedef struct BallFlyingState {
     int Ox40;
     float Ox44;
     int flightContext;
-    BallMotion state;
+    BallState state;
     Vec3f velocity;
     float spinrate;
     Quaternion rotation;
@@ -141,4 +141,7 @@ extern int TotalBallFlightDuration; // 80502800
 void CopyFlyingToRest(BallFlyingState*, BallRestingState*);
 void CopyRestToFlying(BallRestingState*, BallFlyingState*);
 
+
+#ifdef __cplusplus
+}
 #endif

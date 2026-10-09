@@ -1,15 +1,24 @@
 #include <types.h>
 
-#ifndef MGTT_MTX_H
-#define MGTT_MTX_H
+#pragma once
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 typedef float Mtx[3][4];
 typedef float Mtx44[4][4];
 
 
+
+void C_MTXPerspective(
+    Mtx44 m,
+    float fovY,
+    float aspect,
+    float near,
+    float far
+);
 
 void C_MTXOrtho(
     Mtx44 m,
@@ -68,5 +77,6 @@ float PSVECDistance       ( Vec3f* a, Vec3f* b );
 #define VECDistance             PSVECDistance
 
 
-
-#endif // MGTT_MTX_H
+#ifdef __cplusplus
+}
+#endif

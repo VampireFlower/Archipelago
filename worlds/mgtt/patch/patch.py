@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from hooks import hooks
 
-GECKO = False
+GECKO = True
 DEBUG_ASM = False
 OPTIMIZE = True
 
@@ -34,16 +34,20 @@ buc_bytes = mgtt.decompress(buc.read_bytes())[0]
 
 source_files = [file for file in src.rglob("*") if file.suffix in (".S", ".s", ".c", ".cpp")]
 
+header_folders = (patch/'include',
+*(path/dir for path, dirs, files in (patch/'include').walk() for dir in dirs)
+)
+
 cpp = any(".cpp" in file.name for file in source_files)
 
-if cpp:
-    hooks.append({
-        'name': 'cpp_dynamic_initializers',
-        'file': 'dol',
-      'origin': 0x8000326c,
-      'target': '__init_cpp',
-        'type': "b"
-    })
+# if cpp:
+#     hooks.append({
+#         'name': 'cpp_dynamic_initializers',
+#         'file': 'dol',
+#       'origin': 0x8000326c,
+#       'target': '__init_cpp',
+#         'type': "b"
+#     })
 
 # add symbol names for hook locations
 with open(build/"hook_symbols.ld", "w") as f:
@@ -74,6 +78,8 @@ if OPTIMIZE and not DEBUG_ASM:
         "-fdata-sections",
         "-Wl,--gc-sections", # remove unreachable sections after lto pass
     ])
+
+args.extend(f"-I{dir}" for dir in header_folders)
 
 # tell the linker our program's entrypoints
 for hook in hooks:
